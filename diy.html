@@ -55,7 +55,7 @@
     .diy-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,var(--orange-pale),transparent);opacity:0;transition:opacity 0.25s;}
     .diy-card:hover{border-color:var(--orange);transform:translateY(-3px);box-shadow:0 8px 28px rgba(255,85,0,0.15);}
     .diy-card:hover::before{opacity:1;}
-    .diy-icon{font-size:38px;margin-bottom:14px;display:block;position:relative;z-index:1;}
+    .diy-icon{width:44px;height:44px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;color:var(--orange);}
     .diy-name{font-size:15px;font-weight:700;color:var(--brown);margin-bottom:5px;position:relative;z-index:1;}
     .diy-desc{font-size:12px;color:var(--gray);line-height:1.5;position:relative;z-index:1;}
     .diy-diff{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:12px;margin-top:10px;position:relative;z-index:1;text-transform:uppercase;letter-spacing:0.5px;}
@@ -165,7 +165,7 @@
 </nav>
 
 <div class="hero">
-  <div class="hero-tag">🔨 Free DIY Guides</div>
+  <div class="hero-tag">⚒ Free DIY Guides</div>
   <h1>Do it yourself —<br/><em>or let us do it for you</em></h1>
   <p>Step-by-step guides for the most common home improvement projects in Dallas-Fort Worth. Real instructions, real tools, honest difficulty ratings.</p>
   <div class="hero-note">💡 <span>Most homeowners start DIY and call us halfway through. <strong>We don't judge — we just finish the job.</strong></span></div>
@@ -190,98 +190,98 @@
   <div class="diy-grid" id="diyGrid">
 
     <div class="diy-card" data-cat="painting" onclick="openDiy('painting_interior')">
-      <span class="diy-icon">🖌️</span>
+      <span class="diy-icon" style="color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></span>
       <div class="diy-name">Interior painting</div>
       <div class="diy-desc">Paint a room like a pro — prep, prime, roll</div>
       <span class="diy-diff diff-easy">Easy</span>
     </div>
 
     <div class="diy-card" data-cat="painting" onclick="openDiy('painting_exterior')">
-      <span class="diy-icon">🏠</span>
+      <span class="diy-icon" style="color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
       <div class="diy-name">Exterior painting</div>
       <div class="diy-desc">Paint your home's exterior walls and trim</div>
       <span class="diy-diff diff-hard">Hard</span>
     </div>
 
     <div class="diy-card" data-cat="walls" onclick="openDiy('drywall_repair')">
-      <span class="diy-icon">🧱</span>
+      <span class="diy-icon" style="color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="10" width="9" height="4" rx="1"/><rect x="13" y="10" width="9" height="4" rx="1"/><rect x="2" y="17" width="20" height="4" rx="1"/></svg></span>
       <div class="diy-name">Drywall repair</div>
       <div class="diy-desc">Patch holes and cracks from small to large</div>
       <span class="diy-diff diff-medium">Medium</span>
     </div>
 
     <div class="diy-card" data-cat="walls" onclick="openDiy('concrete_patch')">
-      <span class="diy-icon">🪨</span>
+      <span class="diy-icon" style="color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><ellipse cx="12" cy="14" rx="9" ry="6"/><path d="M6 10c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg></span>
       <div class="diy-name">Concrete patching</div>
       <div class="diy-desc">Fix cracks, steps, or pour a small slab</div>
       <span class="diy-diff diff-medium">Medium</span>
     </div>
 
     <div class="diy-card" data-cat="flooring" onclick="openDiy('lvp_flooring')">
-      <span class="diy-icon">🪵</span>
+      <span class="diy-icon" style="color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><rect x="2" y="7" width="20" height="4" rx="1"/><rect x="2" y="13" width="20" height="4" rx="1"/><line x1="6" y1="7" x2="6" y2="17"/><line x1="12" y1="7" x2="12" y2="17"/><line x1="18" y1="7" x2="18" y2="17"/></svg></span>
       <div class="diy-name">Install LVP flooring</div>
       <div class="diy-desc">Floating vinyl plank — no glue needed</div>
       <span class="diy-diff diff-medium">Medium</span>
     </div>
 
     <div class="diy-card" data-cat="flooring" onclick="openDiy('tile_floor')">
-      <span class="diy-icon">⬛</span>
+      <span class="diy-icon" style="color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg></span>
       <div class="diy-name">Lay floor tile</div>
       <div class="diy-desc">Tile a bathroom, kitchen or entryway floor</div>
       <span class="diy-diff diff-hard">Hard</span>
     </div>
 
     <div class="diy-card" data-cat="kitchen" onclick="openDiy('backsplash')">
-      <span class="diy-icon">🍳</span>
+      <span class="diy-icon" style="color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><path d="M5 12c0-3.9 3.1-7 7-7s7 3.1 7 7"/><rect x="2" y="12" width="20" height="3" rx="1"/><line x1="9" y1="15" x2="7" y2="21"/><line x1="15" y1="15" x2="17" y2="21"/></svg></span>
       <div class="diy-name">Kitchen backsplash</div>
       <div class="diy-desc">Install tile backsplash behind the stove</div>
       <span class="diy-diff diff-medium">Medium</span>
     </div>
 
     <div class="diy-card" data-cat="kitchen" onclick="openDiy('cabinets')">
-      <span class="diy-icon">🗄️</span>
+      <span class="diy-icon" style="color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><rect x="2" y="2" width="20" height="9" rx="2"/><rect x="2" y="13" width="20" height="9" rx="2"/><circle cx="7" cy="6.5" r="1" fill="currentColor"/><circle cx="7" cy="17.5" r="1" fill="currentColor"/></svg></span>
       <div class="diy-name">Install kitchen cabinets</div>
       <div class="diy-desc">Hang upper and lower cabinets plumb and level</div>
       <span class="diy-diff diff-hard">Hard</span>
     </div>
 
     <div class="diy-card" data-cat="bathroom" onclick="openDiy('faucet')">
-      <span class="diy-icon">🚰</span>
+      <span class="diy-icon" style="color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><path d="M5 8h14a2 2 0 012 2v2a2 2 0 01-2 2H5"/><path d="M5 14v5a1 1 0 001 1h4"/><path d="M12 8V4"/><path d="M9 4h6"/><circle cx="10" cy="20" r="1" fill="currentColor"/></svg></span>
       <div class="diy-name">Replace a faucet</div>
       <div class="diy-desc">Swap kitchen or bathroom faucet yourself</div>
       <span class="diy-diff diff-easy">Easy</span>
     </div>
 
     <div class="diy-card" data-cat="bathroom" onclick="openDiy('bathroom_tile')">
-      <span class="diy-icon">🚿</span>
+      <span class="diy-icon" style="color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><path d="M4 12h16"/><path d="M4 12a8 8 0 0116 0"/><line x1="8" y1="12" x2="8" y2="20"/><line x1="12" y1="12" x2="12" y2="20"/><line x1="16" y1="12" x2="16" y2="20"/></svg></span>
       <div class="diy-name">Tile a bathroom wall</div>
       <div class="diy-desc">Shower surround or full bathroom wall tile</div>
       <span class="diy-diff diff-hard">Hard</span>
     </div>
 
     <div class="diy-card" data-cat="appliances" onclick="openDiy('appliance_install')">
-      <span class="diy-icon">🔌</span>
+      <span class="diy-icon" style="color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><path d="M12 2v4M8 6h8l1 6H7l1-6zM9 12v4a3 3 0 006 0v-4"/><line x1="9" y1="2" x2="9" y2="6"/><line x1="15" y1="2" x2="15" y2="6"/></svg></span>
       <div class="diy-name">Install appliances</div>
       <div class="diy-desc">Hook up washer, dryer, dishwasher or fridge</div>
       <span class="diy-diff diff-easy">Easy</span>
     </div>
 
     <div class="diy-card" data-cat="furniture" onclick="openDiy('diy_furniture')">
-      <span class="diy-icon">🪑</span>
+      <span class="diy-icon" style="color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><rect x="6" y="2" width="12" height="10" rx="2"/><path d="M4 12h16v3H4z"/><line x1="8" y1="15" x2="8" y2="22"/><line x1="16" y1="15" x2="16" y2="22"/></svg></span>
       <div class="diy-name">Build your own furniture</div>
       <div class="diy-desc">Tables, shelves and beds from scratch</div>
       <span class="diy-diff diff-medium">Medium</span>
     </div>
 
     <div class="diy-card" data-cat="furniture" onclick="openDiy('restore_furniture')">
-      <span class="diy-icon">✨</span>
+      <span class="diy-icon" style="color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg></span>
       <div class="diy-name">Restore old furniture</div>
       <div class="diy-desc">Sand, stain, and refinish wood furniture</div>
       <span class="diy-diff diff-easy">Easy</span>
     </div>
 
     <div class="diy-card" data-cat="outdoor" onclick="openDiy('concrete_slab')">
-      <span class="diy-icon">🏗️</span>
+      <span class="diy-icon" style="color:var(--orange);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="36" height="36"><rect x="2" y="18" width="20" height="3" rx="1"/><path d="M6 18V8l6-5 6 5v10"/><line x1="12" y1="18" x2="12" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/></svg></span>
       <div class="diy-name">Pour a concrete slab</div>
       <div class="diy-desc">Build a patio, pad or small foundation</div>
       <span class="diy-diff diff-hard">Hard</span>
@@ -451,7 +451,16 @@ var diyData = {
           {title:"When to call us",text:"Water damage involving mold, large areas over 2 sq ft, or repairs near electrical panels are best left to professionals.",tip:""},
         ]
       },
-      "Pro tips": {icon:"", steps:[], intro:""}
+      "Pro tips": {
+        intro:"Tips from professionals that most guides skip.",
+        steps:[
+          {title:"All-purpose vs. setting compound",text:"Setting compound hardens by chemical reaction, not by drying. It's harder and faster. All-purpose compound is easier to sand — better for beginners.",tip:""},
+          {title:"The low-angle light trick",text:"Hold a flashlight parallel to the wall surface. Any bump or ridge will cast a shadow and be immediately visible. This is how pros check their work.",tip:""},
+          {title:"Match texture before you prime",text:"Knockdown, orange peel, and skip trowel each require a different technique. Watch a YouTube video specific to your wall texture before attempting to match it.",tip:""},
+          {title:"Water stains need special primer",text:"Use Zinsser BIN or oil-based primer to seal water stains. Regular primer will not block them — they bleed through any paint.",tip:""},
+          {title:"When to call us instead",text:"Water damage with mold, large areas over 2 sq ft, repairs near electrical panels, or ceiling repairs — these are jobs where professional results are worth the investment.",tip:""}
+        ]
+      }
     }
   },
 
