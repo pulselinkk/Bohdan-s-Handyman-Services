@@ -205,7 +205,7 @@
     .svc-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,var(--orange-pale),transparent);opacity:0;transition:opacity 0.25s;}
     .svc-card:hover{border-color:var(--orange);transform:translateY(-4px);box-shadow:0 8px 32px rgba(255,85,0,0.18);}
     .svc-card:hover::before{opacity:1;}
-    .svc-icon{font-size:36px;margin-bottom:14px;display:block;position:relative;z-index:1;}
+    .svc-icon{width:44px;height:44px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;color:var(--orange);}
     .svc-name{font-size:15px;font-weight:700;color:var(--brown);margin-bottom:5px;position:relative;z-index:1;}
     .svc-desc{font-size:12px;color:var(--gray);line-height:1.5;position:relative;z-index:1;}
     .svc-link{font-size:12px;color:var(--orange);font-weight:600;margin-top:8px;display:block;position:relative;z-index:1;}
@@ -221,7 +221,7 @@
     /* WHY US */
     .why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
     .why-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:28px;display:flex;gap:18px;align-items:flex-start;border-left:3px solid rgba(255,85,0,0.5);}
-    .why-icon-wrap{width:52px;height:52px;background:rgba(232,89,12,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+    .why-icon-wrap{width:52px;height:52px;background:rgba(255,85,0,0.18);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#ff9966;}
     .why-content{}
     .why-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:6px;}
     .why-text{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.65;}
@@ -393,7 +393,7 @@
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-left">
-    <span>📍 Serving all Dallas-Fort Worth</span>
+    <span>Serving all Dallas-Fort Worth</span>
     <span>Mon–Sun 7AM–8PM</span>
   </div>
   <div class="topbar-right">
@@ -488,49 +488,49 @@
     </div>
     <div class="svc-grid">
       <div class="svc-card fade-in" onclick="openMaint('painting')">
-        <span class="svc-icon">🖌️</span>
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></span>
         <div class="svc-name">Painting</div>
         <div class="svc-desc">Interior &amp; exterior, any surface or room</div>
         <span class="svc-link">Starting at $200/room →</span>
       </div>
       <div class="svc-card fade-in" onclick="openMaint('drywall')">
-        <span class="svc-icon">🧱</span>
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="10" width="9" height="4" rx="1"/><rect x="13" y="10" width="9" height="4" rx="1"/><rect x="2" y="17" width="20" height="4" rx="1"/></svg></span>
         <div class="svc-name">Drywall</div>
         <div class="svc-desc">Repair, installation &amp; texturing</div>
         <span class="svc-link">Starting at $95/repair →</span>
       </div>
       <div class="svc-card fade-in" onclick="openMaint('tile')">
-        <span class="svc-icon">⬛</span>
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg></span>
         <div class="svc-name">Tile &amp; Backsplash</div>
         <div class="svc-desc">Kitchen, bath, floors &amp; walls</div>
         <span class="svc-link">Starting at $10/sq ft →</span>
       </div>
       <div class="svc-card fade-in" onclick="openMaint('flooring')">
-        <span class="svc-icon">🪵</span>
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32"><rect x="2" y="7" width="20" height="4" rx="1"/><rect x="2" y="13" width="20" height="4" rx="1"/><line x1="6" y1="7" x2="6" y2="17"/><line x1="12" y1="7" x2="12" y2="17"/><line x1="18" y1="7" x2="18" y2="17"/></svg></span>
         <div class="svc-name">Flooring</div>
         <div class="svc-desc">Hardwood, LVP, laminate &amp; vinyl</div>
         <span class="svc-link">Starting at $4/sq ft →</span>
       </div>
       <div class="svc-card fade-in" onclick="openMaint('kitchen')">
-        <span class="svc-icon">🍳</span>
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32"><path d="M5 12c0-3.9 3.1-7 7-7s7 3.1 7 7"/><rect x="2" y="12" width="20" height="3" rx="1"/><line x1="9" y1="15" x2="7" y2="21"/><line x1="15" y1="15" x2="17" y2="21"/></svg></span>
         <div class="svc-name">Kitchen Remodel</div>
         <div class="svc-desc">Cabinets, countertops, full renovation</div>
         <span class="svc-link">Starting at $5,000 →</span>
       </div>
       <div class="svc-card fade-in" onclick="openMaint('bathroom')">
-        <span class="svc-icon">🚿</span>
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32"><path d="M4 12h16"/><path d="M4 12a8 8 0 0116 0"/><line x1="8" y1="12" x2="8" y2="20"/><line x1="12" y1="12" x2="12" y2="20"/><line x1="16" y1="12" x2="16" y2="20"/></svg></span>
         <div class="svc-name">Bathroom Remodel</div>
         <div class="svc-desc">Showers, vanities, tile &amp; fixtures</div>
         <span class="svc-link">Starting at $3,500 →</span>
       </div>
       <div class="svc-card fade-in" onclick="openMaint('repairs')">
-        <span class="svc-icon">🔧</span>
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></span>
         <div class="svc-name">General Repairs</div>
         <div class="svc-desc">Doors, windows, trim &amp; fixtures</div>
         <span class="svc-link">Starting at $85/hr →</span>
       </div>
       <div class="svc-card fade-in" onclick="openMaint('appliance')">
-        <span class="svc-icon">🫧</span>
+        <span class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg></span>
         <div class="svc-name">Appliance Repair</div>
         <div class="svc-desc">Washer, dryer, fridge, stove &amp; more</div>
         <span class="svc-link">Starting at $99/visit →</span>
@@ -579,28 +579,28 @@
     <p class="sec-sub sec-sub-w">We treat your home like our own — clean, careful, and done right the first time, every time.</p>
     <div class="why-grid fade-in">
       <div class="why-card">
-        <div class="why-icon-wrap">🤝</div>
+        <div class="why-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26"><path d="M17 11H7a4 4 0 000 8h10a4 4 0 000-8z"/><path d="M12 11V5"/><path d="M9 8l3-3 3 3"/></svg></div>
         <div class="why-content">
           <div class="why-title">One point of contact — always Bohdan</div>
           <div class="why-text">No subcontractors, no middlemen. You deal directly with Bohdan from first call to final walkthrough. No handoffs, no surprises.</div>
         </div>
       </div>
       <div class="why-card">
-        <div class="why-icon-wrap">💲</div>
+        <div class="why-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg></div>
         <div class="why-content">
           <div class="why-title">Upfront flat pricing — no surprises</div>
           <div class="why-text">We quote a flat price before we start. What you agree to is what you pay. No hourly billing surprises and no hidden fees.</div>
         </div>
       </div>
       <div class="why-card">
-        <div class="why-icon-wrap">🛡️</div>
+        <div class="why-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <div class="why-content">
           <div class="why-title">1-year labor guarantee — in writing</div>
           <div class="why-text">Every job is backed by a full 1-year labor guarantee. If anything isn't right, we come back and fix it. Period.</div>
         </div>
       </div>
       <div class="why-card">
-        <div class="why-icon-wrap">🧹</div>
+        <div class="why-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26"><path d="M3 21l9-9"/><path d="M12.2 6.2l5.6 5.6-7.8 7.8-5.6-5.6z"/><path d="M18 2l4 4-2.5 2.5-4-4z"/></svg></div>
         <div class="why-content">
           <div class="why-title">Clean job sites — every single day</div>
           <div class="why-text">We protect your floors, furniture, and belongings. We clean up completely before we leave every day — your home stays liveable.</div>
