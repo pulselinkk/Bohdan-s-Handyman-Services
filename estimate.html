@@ -1,0 +1,2729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
+<meta name="theme-color" content="#c84a1a"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Bohdan Estimate"/>
+<title>Estimate Builder · Bohdan's Handyman Services</title>
+<meta name="description" content="Professional estimate builder for Bohdan's Handyman Services. Add line items, attach photos, generate branded PDF estimates instantly."/>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="canonical" href="https://handy-man.sites/estimate.html"/>
+<link rel="icon" type="image/png" href="https://github.com/pulselinkk/Bohdan-s-Handyman-Services/blob/main/assets/Create_a_professional_202604100902.png?raw=true"/>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+/* ============================================================
+   ESTIMATE TOOL — Bohdan's Handyman
+   Extends the main site design system (rust + bone + ink)
+   ============================================================ */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #0e0f11;
+  --ink-soft: #2a2c30;
+  --ink-mute: #5a5e66;
+  --ink-fade: #8a8e96;
+  --bone: #f5f2ec;
+  --bone-deep: #ebe6dc;
+  --paper: #fbfaf6;
+  --white: #ffffff;
+  --rust: #c84a1a;
+  --rust-deep: #a83c10;
+  --rust-pale: #faf0e8;
+  --rust-soft: #f0e0d6;
+  --line: #d8d2c5;
+  --line-soft: #e8e3d8;
+  --green: #2d7a3e;
+  --red: #b73838;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+
+  --shadow-sm: 0 1px 2px rgba(14,15,17,0.04), 0 2px 8px rgba(14,15,17,0.04);
+  --shadow-md: 0 4px 12px rgba(14,15,17,0.06), 0 12px 32px rgba(14,15,17,0.06);
+  --shadow-lg: 0 8px 24px rgba(14,15,17,0.08), 0 24px 64px rgba(14,15,17,0.10);
+  --shadow-rust: 0 8px 28px rgba(200,74,26,0.20);
+}
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--bone);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; max-width: 100%; height: auto; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+[x-cloak] { display: none !important; }
+
+/* ============================================================
+   TOPBAR — minimal brand strip
+   ============================================================ */
+.topbar {
+  background: var(--ink);
+  color: var(--bone);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  position: relative;
+  z-index: 50;
+}
+.topbar a { color: var(--bone); }
+.topbar .brand-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.topbar .brand-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--rust);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--bone);
+  font-size: 14px;
+  letter-spacing: -0.02em;
+}
+.topbar .brand-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+.topbar .save-status {
+  font-size: 10px;
+  color: rgba(245,242,236,0.6);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.topbar .save-status .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.topbar .save-status.saving .dot { background: var(--rust); animation: pulse 1s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+/* ============================================================
+   HEADER — main page header
+   ============================================================ */
+.page-head {
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  padding: 28px 24px 24px;
+}
+.page-head-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.page-head-text { flex: 1; min-width: 280px; }
+.page-head-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 6px;
+}
+.page-head h1 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.page-head h1 em {
+  font-style: italic;
+  color: var(--rust);
+  font-variation-settings: "SOFT" 60, "WONK" 1;
+}
+.page-head-sub {
+  color: var(--ink-mute);
+  font-size: 14px;
+  max-width: 56ch;
+}
+.page-head-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.15s;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: var(--font-sans);
+  line-height: 1.2;
+  border: none;
+}
+.btn-primary { background: var(--rust); color: var(--bone); }
+.btn-primary:hover { background: var(--rust-deep); transform: translateY(-1px); box-shadow: var(--shadow-rust); }
+.btn-ink { background: var(--ink); color: var(--bone); }
+.btn-ink:hover { background: #1a1d24; transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.btn-ghost:hover { border-color: var(--ink); }
+.btn-ghost-rust { background: transparent; color: var(--rust); border: 1.5px solid var(--rust); }
+.btn-ghost-rust:hover { background: var(--rust); color: var(--bone); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-lg { padding: 14px 24px; font-size: 14px; }
+.btn-icon-only { padding: 8px; min-width: 36px; justify-content: center; }
+.btn-danger { background: transparent; color: var(--red); border: 1px solid transparent; }
+.btn-danger:hover { background: rgba(183,56,56,0.08); border-color: var(--red); }
+.btn-block { width: 100%; justify-content: center; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+/* ============================================================
+   LAYOUT — two-column on desktop, stacked on mobile
+   ============================================================ */
+.app {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 1024px) {
+  .app {
+    grid-template-columns: 1fr;
+    padding: 16px;
+    padding-bottom: 100px; /* room for sticky mobile bar */
+  }
+}
+
+.col-main { min-width: 0; }
+.col-side {
+  position: sticky;
+  top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+@media (max-width: 1024px) { .col-side { position: static; } }
+
+/* ============================================================
+   CARDS / SECTIONS
+   ============================================================ */
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.card-head h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.card-head .card-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--rust);
+  color: var(--bone);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.card-head-left { display: flex; align-items: center; gap: 12px; }
+.card-help {
+  font-size: 12px;
+  color: var(--ink-mute);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+.field { margin-bottom: 14px; }
+.field-row { display: grid; gap: 12px; margin-bottom: 14px; }
+.field-row.cols-2 { grid-template-columns: 1fr 1fr; }
+.field-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.field-row.cols-4 { grid-template-columns: 2fr 1fr 1fr 1fr; }
+@media (max-width: 600px) {
+  .field-row.cols-2, .field-row.cols-3, .field-row.cols-4 { grid-template-columns: 1fr; }
+}
+
+.field-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.field-label .required { color: var(--rust); margin-left: 2px; }
+
+.input, .select, .textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--ink);
+  transition: border-color 0.15s;
+  font-variant-numeric: tabular-nums;
+}
+.input:focus, .select:focus, .textarea:focus {
+  outline: none;
+  border-color: var(--rust);
+}
+.input.input-error, .select.input-error { border-color: var(--red); }
+.textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
+.input-num { text-align: right; }
+
+/* Toggle group */
+.toggle-group {
+  display: inline-flex;
+  background: var(--bone-deep);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+.toggle-btn {
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  color: var(--ink-mute);
+  transition: all 0.15s;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: var(--font-sans);
+}
+.toggle-btn.active {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============================================================
+   LINE ITEMS TABLE
+   ============================================================ */
+.items-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.items-empty {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--ink-mute);
+  font-size: 13px;
+  border: 1.5px dashed var(--line);
+  border-radius: 10px;
+  background: var(--bone);
+}
+.items-empty strong { color: var(--ink); display: block; margin-bottom: 4px; font-size: 14px; }
+
+.items-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+}
+.items-table th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 600;
+  padding: 8px 6px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+.items-table th.right { text-align: right; }
+.items-table th.center { text-align: center; }
+.items-table td {
+  padding: 8px 4px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line-soft);
+}
+.items-table tr:last-child td { border-bottom: none; }
+
+.col-handle { width: 24px; }
+.col-desc { min-width: 200px; }
+.col-qty { width: 70px; }
+.col-unit { width: 70px; }
+.col-price { width: 90px; }
+.col-tax { width: 50px; text-align: center; }
+.col-total { width: 90px; text-align: right; }
+.col-del { width: 36px; text-align: center; }
+
+.items-table .input-cell {
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 6px 8px;
+  border-radius: 6px;
+  width: 100%;
+  font-size: 13px;
+}
+.items-table .input-cell:focus {
+  border-color: var(--rust);
+  background: var(--paper);
+  outline: none;
+}
+.items-table .input-cell:hover:not(:focus) {
+  background: var(--bone);
+}
+.items-table .input-cell.right { text-align: right; }
+
+.item-detail-row td {
+  padding-top: 0;
+  padding-bottom: 12px;
+}
+.item-detail-row .input-cell {
+  font-size: 12px;
+  color: var(--ink-mute);
+  font-style: italic;
+}
+
+.item-total {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink);
+  padding: 8px;
+  text-align: right;
+}
+
+.cat-pill {
+  display: inline-block;
+  padding: 2px 6px;
+  background: var(--bone-deep);
+  color: var(--ink-soft);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-left: 6px;
+  font-weight: 600;
+  vertical-align: middle;
+}
+.cat-pill.cat-custom { background: var(--rust-pale); color: var(--rust); }
+
+.handle {
+  cursor: grab;
+  color: var(--ink-fade);
+  user-select: none;
+  padding: 8px 4px;
+  display: inline-block;
+  font-size: 14px;
+  line-height: 1;
+}
+.handle:hover { color: var(--ink); }
+
+input[type="checkbox"].tax-cb {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--rust);
+  cursor: pointer;
+}
+
+/* Mobile: line items as cards */
+@media (max-width: 768px) {
+  .items-table thead { display: none; }
+  .items-table, .items-table tbody, .items-table tr, .items-table td {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+  .items-table tr {
+    background: var(--bone);
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .items-table td {
+    border: none;
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .items-table td::before {
+    content: attr(data-label);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    font-weight: 600;
+    width: 70px;
+    flex-shrink: 0;
+  }
+  .items-table td.col-handle, .items-table td.col-del { display: none; }
+  .items-table td.col-desc::before { display: none; }
+  .items-table td.col-desc { display: block; padding: 0 0 8px; }
+  .items-table .input-cell { background: var(--paper); border-color: var(--line-soft); }
+  .item-detail-row td { padding-bottom: 8px; }
+  .item-detail-row td::before { display: none; }
+  .item-mobile-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--line);
+  }
+  .item-mobile-actions .item-total { padding: 0; }
+}
+
+/* ============================================================
+   PHOTO GALLERY
+   ============================================================ */
+.photos-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.photos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.photo-tile {
+  position: relative;
+  aspect-ratio: 4/3;
+  background: var(--bone-deep);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line-soft);
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+}
+.photo-tile:hover { transform: translateY(-2px); border-color: var(--rust); }
+.photo-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-tile-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.7) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 8px;
+  pointer-events: none;
+}
+.photo-tile-caption {
+  color: var(--bone);
+  font-size: 11px;
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+.photo-tile-del {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.7);
+  color: var(--bone);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1;
+  border: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.photo-tile:hover .photo-tile-del { opacity: 1; }
+.photo-tile-del:hover { background: var(--red); }
+
+.photo-progress {
+  background: var(--rust-pale);
+  border: 1px solid var(--rust-soft);
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--rust-deep);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.photo-progress-bar {
+  height: 4px;
+  background: var(--rust-soft);
+  border-radius: 2px;
+  overflow: hidden;
+  flex: 1;
+}
+.photo-progress-fill {
+  height: 100%;
+  background: var(--rust);
+  transition: width 0.3s;
+}
+
+/* Photo lightbox */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(14,15,17,0.92);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.lightbox-content {
+  max-width: 800px;
+  width: 100%;
+  background: var(--paper);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.lightbox-img-wrap {
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: 60vh;
+}
+.lightbox-img-wrap img { max-width: 100%; max-height: 60vh; object-fit: contain; }
+.lightbox-form { padding: 16px; }
+.lightbox-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* ============================================================
+   TOTALS CARD (sidebar)
+   ============================================================ */
+.totals-card {
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  padding: 24px;
+  position: sticky;
+  top: 16px;
+}
+.totals-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.totals-row .label { color: var(--ink-mute); font-size: 13px; }
+.totals-row .val { font-weight: 500; color: var(--ink); }
+.totals-divider { height: 1px; background: var(--line); margin: 8px 0; }
+.totals-final {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 16px 0 8px;
+  border-top: 2px solid var(--ink);
+}
+.totals-final .label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  font-weight: 600;
+}
+.totals-final .val {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--rust);
+  font-variant-numeric: tabular-nums;
+}
+
+.tax-note {
+  background: var(--bone);
+  border-left: 3px solid var(--rust);
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  border-radius: 0 6px 6px 0;
+  margin: 10px 0;
+  line-height: 1.5;
+}
+.tax-note strong { color: var(--ink); }
+
+.totals-actions {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Tax controls (on main column, top of items) */
+.tax-controls {
+  background: var(--bone);
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 120px;
+  gap: 14px;
+  align-items: end;
+}
+@media (max-width: 600px) {
+  .tax-controls { grid-template-columns: 1fr; }
+}
+.tax-controls .field { margin: 0; }
+.tax-rate-input {
+  position: relative;
+}
+.tax-rate-input input { padding-right: 28px; }
+.tax-rate-input::after {
+  content: '%';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-mute);
+  font-size: 13px;
+  pointer-events: none;
+}
+
+/* ============================================================
+   CATALOG MODAL / DRAWER
+   ============================================================ */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(14,15,17,0.5);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal {
+  background: var(--paper);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 720px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+}
+@media (max-width: 600px) {
+  .modal-backdrop { padding: 0; align-items: flex-end; }
+  .modal { max-height: 92vh; border-radius: 14px 14px 0 0; }
+}
+.modal-head {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.modal-head h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  cursor: pointer;
+  color: var(--ink-mute);
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+}
+.modal-close:hover { background: var(--bone-deep); color: var(--ink); }
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+}
+.modal-search {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bone);
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.modal-search:focus { outline: none; border-color: var(--rust); }
+
+.cat-section { margin-bottom: 24px; }
+.cat-section-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rust);
+  font-weight: 600;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.cat-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.cat-item:hover { background: var(--bone); }
+.cat-item-name { font-size: 14px; color: var(--ink); font-weight: 500; }
+.cat-item-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.05em;
+}
+.cat-item-price {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--rust);
+  font-variant-numeric: tabular-nums;
+}
+.cat-item-tag {
+  display: inline-block;
+  padding: 2px 6px;
+  background: var(--rust-pale);
+  color: var(--rust);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-left: 6px;
+  font-weight: 600;
+}
+
+/* ============================================================
+   BANNER / TOAST
+   ============================================================ */
+.banner {
+  background: var(--rust-pale);
+  border: 1px solid var(--rust-soft);
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--ink);
+}
+.banner-text { flex: 1; }
+.banner-actions { display: flex; gap: 6px; }
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--bone);
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 1000;
+  box-shadow: var(--shadow-lg);
+  max-width: 90vw;
+}
+.toast.error { background: var(--red); }
+.toast.success { background: var(--green); }
+
+/* ============================================================
+   MOBILE STICKY BAR
+   ============================================================ */
+.mobile-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  padding: 12px 16px;
+  z-index: 50;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 -4px 24px rgba(14,15,17,0.06);
+}
+@media (max-width: 1024px) { .mobile-bar { display: flex; } }
+.mobile-bar-total {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--rust);
+  letter-spacing: -0.015em;
+  font-variant-numeric: tabular-nums;
+}
+.mobile-bar-total small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 500;
+}
+
+/* ============================================================
+   DISCLAIMER / NOTES
+   ============================================================ */
+.disclaimer-box {
+  background: var(--ink);
+  color: var(--bone);
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.55;
+  margin-top: 10px;
+}
+.disclaimer-box .lbl {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--rust);
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+}
+.disclaimer-box em {
+  font-style: italic;
+  color: var(--bone);
+}
+
+/* Settings sub-panel */
+details.settings { margin-top: 12px; }
+details.settings summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 600;
+  padding: 8px 0;
+  user-select: none;
+}
+details.settings summary:hover { color: var(--rust); }
+details.settings[open] summary { color: var(--rust); margin-bottom: 12px; }
+details.settings .settings-body {
+  padding-left: 12px;
+  border-left: 2px solid var(--line);
+}
+
+/* small SVG icons inline */
+.ic { width: 16px; height: 16px; flex-shrink: 0; }
+.ic-sm { width: 14px; height: 14px; }
+
+</style>
+
+<!-- jsPDF + autotable -->
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
+
+<!-- Alpine.js -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+
+<!-- App scripts -->
+<script>
+// catalog.js — DFW-priced service catalog for Bohdan's Handyman
+// Categories match the main site's service pages
+// kind: 'labor' (Texas residential = non-taxable) | 'material' (taxable on separated contracts)
+
+window.CATALOG = [
+  // PAINTING
+  { cat: 'painting', label: 'Painting', kind: 'labor', desc: 'Interior wall painting (1 coat)', unit: 'sq ft', price: 1.75 },
+  { cat: 'painting', label: 'Painting', kind: 'labor', desc: 'Interior wall painting (2 coats)', unit: 'sq ft', price: 2.50 },
+  { cat: 'painting', label: 'Painting', kind: 'labor', desc: 'Trim & baseboard painting', unit: 'lin ft', price: 3.25 },
+  { cat: 'painting', label: 'Painting', kind: 'labor', desc: 'Ceiling painting', unit: 'sq ft', price: 2.75 },
+  { cat: 'painting', label: 'Painting', kind: 'labor', desc: 'Exterior painting (HardiePlank/stucco)', unit: 'sq ft', price: 3.50 },
+  { cat: 'painting', label: 'Painting', kind: 'labor', desc: 'Single bedroom paint (walls only)', unit: 'room', price: 450 },
+  { cat: 'painting', label: 'Painting', kind: 'labor', desc: 'Whole-house interior paint (per sqft)', unit: 'sq ft', price: 4.50 },
+  { cat: 'painting', label: 'Painting', kind: 'labor', desc: 'Kitchen cabinet refinish (sand, prime, spray)', unit: 'cabinet', price: 285 },
+  { cat: 'painting', label: 'Painting', kind: 'labor', desc: 'Single accent wall', unit: 'wall', price: 250 },
+  { cat: 'painting', label: 'Painting', kind: 'labor', desc: 'Door painting (per door, both sides)', unit: 'door', price: 125 },
+  { cat: 'painting', label: 'Painting', kind: 'material', desc: 'Premium paint (SW Emerald or BM Aura)', unit: 'gal', price: 95 },
+  { cat: 'painting', label: 'Painting', kind: 'material', desc: 'Standard paint (mid-tier)', unit: 'gal', price: 55 },
+  { cat: 'painting', label: 'Painting', kind: 'material', desc: 'Primer (oil-based or bonding)', unit: 'gal', price: 45 },
+
+  // DRYWALL
+  { cat: 'drywall', label: 'Drywall', kind: 'labor', desc: 'Small nail hole / ding repair', unit: 'each', price: 95 },
+  { cat: 'drywall', label: 'Drywall', kind: 'labor', desc: 'Doorknob hole repair', unit: 'each', price: 145 },
+  { cat: 'drywall', label: 'Drywall', kind: 'labor', desc: 'Medium hole repair (6"–12")', unit: 'each', price: 235 },
+  { cat: 'drywall', label: 'Drywall', kind: 'labor', desc: 'Seasonal crack repair', unit: 'crack', price: 165 },
+  { cat: 'drywall', label: 'Drywall', kind: 'labor', desc: 'Full sheet replacement (4x8)', unit: 'sheet', price: 385 },
+  { cat: 'drywall', label: 'Drywall', kind: 'labor', desc: 'Ceiling patch after leak', unit: 'sq ft', price: 18 },
+  { cat: 'drywall', label: 'Drywall', kind: 'labor', desc: 'Popcorn ceiling removal', unit: 'sq ft', price: 1.75 },
+  { cat: 'drywall', label: 'Drywall', kind: 'labor', desc: 'Texture matching (orange peel)', unit: 'sq ft', price: 2.25 },
+  { cat: 'drywall', label: 'Drywall', kind: 'labor', desc: 'Level 5 smooth wall finish', unit: 'sq ft', price: 4.50 },
+  { cat: 'drywall', label: 'Drywall', kind: 'labor', desc: 'Garage drywall finish (Level 2)', unit: 'sq ft', price: 2.75 },
+  { cat: 'drywall', label: 'Drywall', kind: 'material', desc: 'Drywall sheet (1/2" 4x8)', unit: 'sheet', price: 18 },
+  { cat: 'drywall', label: 'Drywall', kind: 'material', desc: 'Joint compound (5 gal)', unit: 'bucket', price: 22 },
+
+  // TILE
+  { cat: 'tile', label: 'Tile', kind: 'labor', desc: 'Floor tile install (porcelain)', unit: 'sq ft', price: 12 },
+  { cat: 'tile', label: 'Tile', kind: 'labor', desc: 'Wall tile install', unit: 'sq ft', price: 14 },
+  { cat: 'tile', label: 'Tile', kind: 'labor', desc: 'Backsplash install (subway or basic)', unit: 'sq ft', price: 22 },
+  { cat: 'tile', label: 'Tile', kind: 'labor', desc: 'Herringbone marble backsplash', unit: 'sq ft', price: 38 },
+  { cat: 'tile', label: 'Tile', kind: 'labor', desc: 'Standard shower tile (60 sqft full)', unit: 'job', price: 5500 },
+  { cat: 'tile', label: 'Tile', kind: 'labor', desc: 'Walk-in curbless shower', unit: 'job', price: 9500 },
+  { cat: 'tile', label: 'Tile', kind: 'labor', desc: 'Bathroom floor tile (40 sqft)', unit: 'job', price: 1300 },
+  { cat: 'tile', label: 'Tile', kind: 'labor', desc: 'Tub surround retile', unit: 'job', price: 3200 },
+  { cat: 'tile', label: 'Tile', kind: 'labor', desc: 'Heated floor addition', unit: 'job', price: 1100 },
+  { cat: 'tile', label: 'Tile', kind: 'labor', desc: 'Fireplace surround tile', unit: 'job', price: 1850 },
+  { cat: 'tile', label: 'Tile', kind: 'labor', desc: 'Schluter KERDI waterproofing', unit: 'sq ft', price: 8 },
+  { cat: 'tile', label: 'Tile', kind: 'labor', desc: 'Grout repair', unit: 'lin ft', price: 4.50 },
+
+  // FLOORING
+  { cat: 'flooring', label: 'Flooring', kind: 'labor', desc: 'LVP install (basic grade)', unit: 'sq ft', price: 5 },
+  { cat: 'flooring', label: 'Flooring', kind: 'labor', desc: 'LVP install (premium pet-grade)', unit: 'sq ft', price: 7.50 },
+  { cat: 'flooring', label: 'Flooring', kind: 'labor', desc: 'Engineered hardwood floating install', unit: 'sq ft', price: 9 },
+  { cat: 'flooring', label: 'Flooring', kind: 'labor', desc: 'Engineered hardwood glue-down', unit: 'sq ft', price: 12 },
+  { cat: 'flooring', label: 'Flooring', kind: 'labor', desc: 'Porcelain tile floor install', unit: 'sq ft', price: 13 },
+  { cat: 'flooring', label: 'Flooring', kind: 'labor', desc: 'Wood-look plank tile', unit: 'sq ft', price: 16 },
+  { cat: 'flooring', label: 'Flooring', kind: 'labor', desc: 'Laminate (AC4 grade) install', unit: 'sq ft', price: 4.50 },
+  { cat: 'flooring', label: 'Flooring', kind: 'labor', desc: 'Carpet (nylon premium) install', unit: 'sq ft', price: 5.50 },
+  { cat: 'flooring', label: 'Flooring', kind: 'labor', desc: 'Demo old flooring', unit: 'sq ft', price: 2 },
+  { cat: 'flooring', label: 'Flooring', kind: 'labor', desc: 'Stair refinish/install (per stair)', unit: 'stair', price: 145 },
+  { cat: 'flooring', label: 'Flooring', kind: 'labor', desc: 'Subfloor moisture testing & prep', unit: 'job', price: 350 },
+
+  // KITCHEN REMODEL
+  { cat: 'kitchen', label: 'Kitchen', kind: 'labor', desc: 'Cabinet install (per cabinet)', unit: 'each', price: 175 },
+  { cat: 'kitchen', label: 'Kitchen', kind: 'labor', desc: 'Cabinet install (per linear ft)', unit: 'lin ft', price: 65 },
+  { cat: 'kitchen', label: 'Kitchen', kind: 'labor', desc: 'Quartz countertop install', unit: 'sq ft', price: 18 },
+  { cat: 'kitchen', label: 'Kitchen', kind: 'labor', desc: 'Granite countertop install', unit: 'sq ft', price: 16 },
+  { cat: 'kitchen', label: 'Kitchen', kind: 'labor', desc: 'Sink + faucet install', unit: 'each', price: 285 },
+  { cat: 'kitchen', label: 'Kitchen', kind: 'labor', desc: 'Garbage disposal install', unit: 'each', price: 285 },
+  { cat: 'kitchen', label: 'Kitchen', kind: 'labor', desc: 'Range hood install (vented)', unit: 'each', price: 425 },
+  { cat: 'kitchen', label: 'Kitchen', kind: 'labor', desc: 'Cosmetic refresh package', unit: 'job', price: 8500 },
+  { cat: 'kitchen', label: 'Kitchen', kind: 'labor', desc: 'Mid-range full remodel', unit: 'job', price: 38000 },
+  { cat: 'kitchen', label: 'Kitchen', kind: 'labor', desc: 'Full custom build', unit: 'job', price: 95000 },
+  { cat: 'kitchen', label: 'Kitchen', kind: 'labor', desc: 'Backsplash full installation', unit: 'job', price: 1100 },
+
+  // BATHROOM REMODEL
+  { cat: 'bathroom', label: 'Bathroom', kind: 'labor', desc: 'Toilet replacement', unit: 'each', price: 575 },
+  { cat: 'bathroom', label: 'Bathroom', kind: 'labor', desc: 'Vanity install (32"–48")', unit: 'each', price: 1100 },
+  { cat: 'bathroom', label: 'Bathroom', kind: 'labor', desc: 'Shower valve replacement', unit: 'each', price: 625 },
+  { cat: 'bathroom', label: 'Bathroom', kind: 'labor', desc: 'Tub-to-shower conversion', unit: 'job', price: 7800 },
+  { cat: 'bathroom', label: 'Bathroom', kind: 'labor', desc: 'Cosmetic refresh', unit: 'job', price: 4200 },
+  { cat: 'bathroom', label: 'Bathroom', kind: 'labor', desc: 'Mid-range hall bath remodel', unit: 'job', price: 15500 },
+  { cat: 'bathroom', label: 'Bathroom', kind: 'labor', desc: 'Full primary bath remodel', unit: 'job', price: 38000 },
+  { cat: 'bathroom', label: 'Bathroom', kind: 'labor', desc: 'Vent fan upgrade (humidity-sense)', unit: 'each', price: 625 },
+  { cat: 'bathroom', label: 'Bathroom', kind: 'labor', desc: 'Lighting refresh (3-5 fixtures)', unit: 'job', price: 750 },
+  { cat: 'bathroom', label: 'Bathroom', kind: 'labor', desc: 'Heated floor add-on', unit: 'job', price: 1100 },
+  { cat: 'bathroom', label: 'Bathroom', kind: 'labor', desc: 'Steam shower upgrade', unit: 'job', price: 6500 },
+
+  // GENERAL REPAIRS
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Service call / minimum visit (1 hr)', unit: 'visit', price: 95 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Hourly handyman labor', unit: 'hr', price: 95 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Hang TV mount (50"+)', unit: 'each', price: 245 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Install ceiling fan', unit: 'each', price: 245 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Replace bathroom faucet', unit: 'each', price: 245 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Replace kitchen faucet', unit: 'each', price: 295 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Hang interior door (slab in jamb)', unit: 'each', price: 385 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Install pre-hung interior door', unit: 'each', price: 575 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Install pre-hung exterior door', unit: 'each', price: 1250 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Install crown molding (per room)', unit: 'room', price: 850 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Install baseboard (per room)', unit: 'room', price: 625 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Install custom shelving', unit: 'job', price: 750 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Repair gate', unit: 'each', price: 285 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Replace deck board (per board)', unit: 'each', price: 65 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Stain fence', unit: 'lin ft', price: 4.75 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Whole-house exterior caulking', unit: 'job', price: 750 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Hang artwork / mirror (per item)', unit: 'item', price: 75 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Outlet/switch replacement', unit: 'each', price: 85 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Light fixture replacement', unit: 'each', price: 145 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Fix sticking door', unit: 'door', price: 165 },
+  { cat: 'repairs', label: 'Repairs', kind: 'labor', desc: 'Replace window glass / IGU', unit: 'each', price: 425 },
+
+  // APPLIANCE REPAIR (Texas TPP repair = ALWAYS taxable, even residential)
+  { cat: 'appliance', label: 'Appliance', kind: 'labor', desc: 'Diagnostic visit (applied to repair)', unit: 'visit', price: 99, alwaysTaxable: true },
+  { cat: 'appliance', label: 'Appliance', kind: 'labor', desc: 'Dryer vent cleaning', unit: 'each', price: 175, alwaysTaxable: true },
+  { cat: 'appliance', label: 'Appliance', kind: 'labor', desc: 'Heating element replacement (dryer)', unit: 'each', price: 245, alwaysTaxable: true },
+  { cat: 'appliance', label: 'Appliance', kind: 'labor', desc: 'Belt / roller replacement (dryer)', unit: 'each', price: 235, alwaysTaxable: true },
+  { cat: 'appliance', label: 'Appliance', kind: 'labor', desc: 'Drain pump (washer/dishwasher)', unit: 'each', price: 245, alwaysTaxable: true },
+  { cat: 'appliance', label: 'Appliance', kind: 'labor', desc: 'Refrigerator condenser cleaning', unit: 'each', price: 145, alwaysTaxable: true },
+  { cat: 'appliance', label: 'Appliance', kind: 'labor', desc: 'Ice maker repair', unit: 'each', price: 355, alwaysTaxable: true },
+  { cat: 'appliance', label: 'Appliance', kind: 'labor', desc: 'Refrigerator door seal', unit: 'each', price: 245, alwaysTaxable: true },
+  { cat: 'appliance', label: 'Appliance', kind: 'labor', desc: 'Garbage disposal replacement', unit: 'each', price: 355, alwaysTaxable: true },
+  { cat: 'appliance', label: 'Appliance', kind: 'labor', desc: 'Dishwasher install (replacement)', unit: 'each', price: 385, alwaysTaxable: true },
+  { cat: 'appliance', label: 'Appliance', kind: 'labor', desc: 'Range install (electric)', unit: 'each', price: 245, alwaysTaxable: true },
+  { cat: 'appliance', label: 'Appliance', kind: 'labor', desc: 'Range install (gas, with licensed plumber)', unit: 'each', price: 525, alwaysTaxable: true },
+];
+
+// Categories with display order and labels
+window.CATEGORIES = [
+  { id: 'painting', label: 'Painting', icon: '🎨' },
+  { id: 'drywall', label: 'Drywall', icon: '⊞' },
+  { id: 'tile', label: 'Tile & Backsplash', icon: '◫' },
+  { id: 'flooring', label: 'Flooring', icon: '═' },
+  { id: 'kitchen', label: 'Kitchen Remodel', icon: '🍳' },
+  { id: 'bathroom', label: 'Bathroom Remodel', icon: '🚿' },
+  { id: 'repairs', label: 'General Repairs', icon: '🔧' },
+  { id: 'appliance', label: 'Appliance Repair', icon: '⚙' },
+];
+
+</script>
+<script>
+// app.js — Bohdan's Handyman estimate tool
+// Alpine.js component + IndexedDB photo storage + image processing
+
+// ============================================================
+// IndexedDB photo store (idb-style, but raw IndexedDB to avoid CDN dep)
+// ============================================================
+const DB_NAME = 'bohdan-estimate';
+const DB_VERSION = 1;
+const PHOTO_STORE = 'photos';
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(PHOTO_STORE)) {
+        db.createObjectStore(PHOTO_STORE);
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function savePhoto(id, blob) {
+  const db = await openDB();
+  return new Promise((res, rej) => {
+    const tx = db.transaction(PHOTO_STORE, 'readwrite');
+    tx.objectStore(PHOTO_STORE).put(blob, id);
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+}
+
+async function loadPhoto(id) {
+  const db = await openDB();
+  return new Promise((res, rej) => {
+    const tx = db.transaction(PHOTO_STORE, 'readonly');
+    const req = tx.objectStore(PHOTO_STORE).get(id);
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+
+async function deletePhoto(id) {
+  const db = await openDB();
+  return new Promise((res, rej) => {
+    const tx = db.transaction(PHOTO_STORE, 'readwrite');
+    tx.objectStore(PHOTO_STORE).delete(id);
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+}
+
+async function clearAllPhotos() {
+  const db = await openDB();
+  return new Promise((res, rej) => {
+    const tx = db.transaction(PHOTO_STORE, 'readwrite');
+    tx.objectStore(PHOTO_STORE).clear();
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+}
+
+// ============================================================
+// Image processing — EXIF-safe, target ~80KB JPEG
+// ============================================================
+async function compressImage(file, opts = {}) {
+  const maxDim = opts.maxDim || 1400;
+  const quality = opts.quality || 0.78;
+
+  // Load via createImageBitmap for proper EXIF rotation
+  let bitmap;
+  try {
+    bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+  } catch (e) {
+    // Fallback for HEIC or unsupported
+    throw new Error('Could not read image. Try a JPEG or PNG.');
+  }
+
+  // Calculate target dims
+  let w = bitmap.width, h = bitmap.height;
+  if (w > maxDim || h > maxDim) {
+    if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+    else { w = Math.round(w * maxDim / h); h = maxDim; }
+  }
+
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(bitmap, 0, 0, w, h);
+  bitmap.close?.();
+
+  return new Promise((res) => {
+    canvas.toBlob((blob) => res(blob), 'image/jpeg', quality);
+  });
+}
+
+async function blobToDataURL(blob) {
+  return new Promise((res, rej) => {
+    const reader = new FileReader();
+    reader.onload = () => res(reader.result);
+    reader.onerror = () => rej(reader.error);
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function makeThumb(blob, size = 200) {
+  const bitmap = await createImageBitmap(blob, { imageOrientation: 'from-image' });
+  const w = bitmap.width, h = bitmap.height;
+  const ratio = Math.min(size / w, size / h);
+  const tw = Math.round(w * ratio), th = Math.round(h * ratio);
+  const canvas = document.createElement('canvas');
+  canvas.width = tw; canvas.height = th;
+  canvas.getContext('2d').drawImage(bitmap, 0, 0, tw, th);
+  bitmap.close?.();
+  return canvas.toDataURL('image/jpeg', 0.7);
+}
+
+// ============================================================
+// Money formatting
+// ============================================================
+function fmtMoney(n) {
+  if (typeof n !== 'number' || isNaN(n)) return '$0.00';
+  return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function fmtDate(d) {
+  if (!d) return '';
+  const date = typeof d === 'string' ? new Date(d) : d;
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function genEstimateNumber() {
+  const d = new Date();
+  const yy = String(d.getFullYear()).slice(-2);
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  const rand = Math.floor(Math.random() * 900) + 100;
+  return `${yy}${mm}${dd}-${rand}`;
+}
+
+// ============================================================
+// Alpine state factory
+// ============================================================
+function estimateApp() {
+  return {
+    // ---- State ----
+    customer: { name: '', address: '', phone: '', email: '' },
+    project: { title: '', description: '' },
+    items: [],
+    photos: [], // {id, name, thumbDataUrl, caption}
+    notes: '',
+    propertyType: 'residential', // 'residential' | 'commercial'
+    contractType: 'lump_sum',    // 'lump_sum' | 'separated'
+    taxRate: 8.25,
+    estimateNumber: '',
+    issuedAt: new Date().toISOString().slice(0, 10),
+    validUntilDays: 30,
+
+    // UI state
+    catalogOpen: false,
+    catalogSearch: '',
+    activeCategory: 'all',
+    showRestoreBanner: false,
+    lightboxPhoto: null,
+    saveStatus: 'saved', // 'saved' | 'saving'
+    uploadProgress: null, // { done, total }
+    showSettings: false,
+    showCustomItem: false,
+    customItem: { desc: '', qty: 1, unit: 'ea', price: 0, taxable: false, kind: 'labor' },
+    pdfBuilding: false,
+    toastMsg: null,
+    toastType: 'info',
+    saveTimer: null,
+    toastTimer: null,
+    flashTimer: null,
+
+    // ---- Derived ----
+    get subtotal() {
+      return this.items.reduce((s, i) => s + (Number(i.qty) || 0) * (Number(i.price) || 0), 0);
+    },
+    get taxableSubtotal() {
+      return this.items
+        .filter(i => i.taxable)
+        .reduce((s, i) => s + (Number(i.qty) || 0) * (Number(i.price) || 0), 0);
+    },
+    get tax() {
+      return this.taxableSubtotal * (Number(this.taxRate) || 0) / 100;
+    },
+    get total() {
+      return this.subtotal + this.tax;
+    },
+    get validUntilDate() {
+      const d = new Date(this.issuedAt);
+      d.setDate(d.getDate() + parseInt(this.validUntilDays || 30));
+      return d.toISOString().slice(0, 10);
+    },
+    get filteredCatalog() {
+      const search = this.catalogSearch.toLowerCase().trim();
+      return window.CATALOG.filter(item => {
+        if (this.activeCategory !== 'all' && item.cat !== this.activeCategory) return false;
+        if (search && !item.desc.toLowerCase().includes(search)) return false;
+        return true;
+      });
+    },
+    get catalogByCategory() {
+      const groups = {};
+      this.filteredCatalog.forEach(item => {
+        if (!groups[item.cat]) groups[item.cat] = [];
+        groups[item.cat].push(item);
+      });
+      return window.CATEGORIES
+        .filter(c => groups[c.id])
+        .map(c => ({ ...c, items: groups[c.id] }));
+    },
+
+    // ---- Init ----
+    init() {
+      this.maybeRestoreDraft();
+      // Auto-generate estimate number if not set
+      if (!this.estimateNumber) this.estimateNumber = genEstimateNumber();
+      // Watch and debounce-save
+      this.$watch('customer', () => this.scheduleSave(), { deep: true });
+      this.$watch('project', () => this.scheduleSave(), { deep: true });
+      this.$watch('items', () => this.scheduleSave(), { deep: true });
+      this.$watch('photos', () => this.scheduleSave(), { deep: true });
+      this.$watch('notes', () => this.scheduleSave());
+      this.$watch('propertyType', () => { this.recomputeItemTaxability(); this.scheduleSave(); });
+      this.$watch('contractType', () => { this.recomputeItemTaxability(); this.scheduleSave(); });
+      this.$watch('taxRate', () => this.scheduleSave());
+      this.$watch('issuedAt', () => this.scheduleSave());
+      this.$watch('validUntilDays', () => this.scheduleSave());
+      this.$watch('estimateNumber', () => this.scheduleSave());
+    },
+
+    // ---- Tax logic ----
+    // Texas Pub 94-116:
+    // - Residential lump-sum: contractor is consumer. Labor + materials NOT taxable to customer.
+    // - Residential separated: labor not taxable; materials taxable.
+    // - Commercial: everything taxable.
+    // - Appliance repair (TPP): always taxable regardless of contract.
+    defaultTaxableFor(catItem) {
+      if (catItem.alwaysTaxable) return true;
+      if (this.propertyType === 'commercial') return true;
+      // residential:
+      if (this.contractType === 'lump_sum') return false;
+      // separated residential: only materials taxable
+      return catItem.kind === 'material';
+    },
+    recomputeItemTaxability() {
+      // When property/contract type changes, refresh defaults
+      this.items.forEach(item => {
+        if (item.alwaysTaxable) { item.taxable = true; return; }
+        if (this.propertyType === 'commercial') { item.taxable = true; return; }
+        if (this.contractType === 'lump_sum') { item.taxable = false; return; }
+        // separated residential: material taxable, labor not
+        item.taxable = item.kind === 'material';
+      });
+    },
+
+    // ---- Catalog ----
+    openCatalog() { this.catalogOpen = true; this.catalogSearch = ''; },
+    closeCatalog() { this.catalogOpen = false; },
+    addFromCatalog(catItem) {
+      const item = {
+        id: crypto.randomUUID(),
+        source: 'catalog',
+        category: catItem.cat,
+        kind: catItem.kind,
+        alwaysTaxable: catItem.alwaysTaxable || false,
+        desc: catItem.desc,
+        qty: 1,
+        unit: catItem.unit,
+        price: catItem.price,
+        taxable: this.defaultTaxableFor(catItem),
+        notes: '',
+        showDetails: false,
+      };
+      this.items.push(item);
+      this.flash('Added: ' + catItem.desc, 'success');
+    },
+    addCustomItem() {
+      const item = {
+        id: crypto.randomUUID(),
+        source: 'custom',
+        category: 'custom',
+        kind: this.customItem.kind,
+        desc: this.customItem.desc || 'Custom item',
+        qty: this.customItem.qty,
+        unit: this.customItem.unit,
+        price: this.customItem.price,
+        taxable: this.customItem.taxable,
+        notes: '',
+        showDetails: false,
+      };
+      this.items.push(item);
+      this.showCustomItem = false;
+      this.customItem = { desc: '', qty: 1, unit: 'ea', price: 0, taxable: false, kind: 'labor' };
+      this.flash('Custom item added', 'success');
+    },
+    removeItem(id) {
+      this.items = this.items.filter(i => i.id !== id);
+    },
+    duplicateItem(id) {
+      const idx = this.items.findIndex(i => i.id === id);
+      if (idx === -1) return;
+      const copy = { ...this.items[idx], id: crypto.randomUUID() };
+      this.items.splice(idx + 1, 0, copy);
+    },
+    moveItem(id, direction) {
+      const idx = this.items.findIndex(i => i.id === id);
+      if (idx === -1) return;
+      const newIdx = idx + direction;
+      if (newIdx < 0 || newIdx >= this.items.length) return;
+      const tmp = this.items[idx];
+      this.items[idx] = this.items[newIdx];
+      this.items[newIdx] = tmp;
+      this.items = [...this.items]; // force reactivity
+    },
+    itemTotal(item) {
+      return (Number(item.qty) || 0) * (Number(item.price) || 0);
+    },
+
+    // ---- Photos ----
+    async handlePhotoFiles(files) {
+      const list = Array.from(files);
+      if (list.length === 0) return;
+      this.uploadProgress = { done: 0, total: list.length };
+      // Sequential to avoid OOM on iOS
+      for (const file of list) {
+        try {
+          const compressed = await compressImage(file, { maxDim: 1400, quality: 0.78 });
+          const id = crypto.randomUUID();
+          await savePhoto(id, compressed);
+          const thumb = await makeThumb(compressed, 280);
+          this.photos.push({
+            id,
+            name: file.name,
+            thumbDataUrl: thumb,
+            caption: '',
+            size: compressed.size,
+          });
+        } catch (e) {
+          console.error('Photo error', e);
+          this.flash(`Skipped ${file.name}: ${e.message}`, 'error');
+        }
+        this.uploadProgress.done++;
+      }
+      this.uploadProgress = null;
+      this.flash(`Added ${list.length} photo${list.length > 1 ? 's' : ''}`, 'success');
+    },
+    async removePhoto(id) {
+      try { await deletePhoto(id); } catch (e) { console.warn(e); }
+      this.photos = this.photos.filter(p => p.id !== id);
+    },
+    openLightbox(photo) {
+      this.lightboxPhoto = { ...photo };
+    },
+    saveLightbox() {
+      if (!this.lightboxPhoto) return;
+      const idx = this.photos.findIndex(p => p.id === this.lightboxPhoto.id);
+      if (idx > -1) {
+        this.photos[idx].caption = this.lightboxPhoto.caption;
+        this.photos = [...this.photos];
+      }
+      this.lightboxPhoto = null;
+    },
+    closeLightbox() { this.lightboxPhoto = null; },
+
+    // ---- Persistence ----
+    serializableState() {
+      return {
+        customer: this.customer,
+        project: this.project,
+        items: this.items,
+        photos: this.photos.map(p => ({ id: p.id, name: p.name, caption: p.caption, thumbDataUrl: p.thumbDataUrl, size: p.size })),
+        notes: this.notes,
+        propertyType: this.propertyType,
+        contractType: this.contractType,
+        taxRate: this.taxRate,
+        estimateNumber: this.estimateNumber,
+        issuedAt: this.issuedAt,
+        validUntilDays: this.validUntilDays,
+        savedAt: Date.now(),
+      };
+    },
+    scheduleSave() {
+      this.saveStatus = 'saving';
+      clearTimeout(this.saveTimer);
+      this.saveTimer = setTimeout(() => {
+        try {
+          localStorage.setItem('bohdan-estimate-draft-v1', JSON.stringify(this.serializableState()));
+          this.saveStatus = 'saved';
+        } catch (e) {
+          console.warn('localStorage quota exceeded');
+          this.saveStatus = 'saved';
+        }
+      }, 400);
+    },
+    maybeRestoreDraft() {
+      try {
+        const raw = localStorage.getItem('bohdan-estimate-draft-v1');
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        // Only show banner if there's meaningful data
+        const hasData = data.customer?.name || (data.items && data.items.length) || (data.photos && data.photos.length);
+        if (!hasData) return;
+        // Auto-restore (silent) — store previous data and offer banner
+        this._pendingRestore = data;
+        this.showRestoreBanner = true;
+      } catch (e) { console.warn(e); }
+    },
+    restoreDraft() {
+      if (!this._pendingRestore) return;
+      const d = this._pendingRestore;
+      Object.assign(this.customer, d.customer || {});
+      Object.assign(this.project, d.project || {});
+      this.items = (d.items || []).map(i => ({ ...i, showDetails: false }));
+      this.photos = d.photos || [];
+      this.notes = d.notes || '';
+      this.propertyType = d.propertyType || 'residential';
+      this.contractType = d.contractType || 'lump_sum';
+      this.taxRate = d.taxRate ?? 8.25;
+      this.estimateNumber = d.estimateNumber || genEstimateNumber();
+      this.issuedAt = d.issuedAt || new Date().toISOString().slice(0, 10);
+      this.validUntilDays = d.validUntilDays || 30;
+      this.showRestoreBanner = false;
+      this._pendingRestore = null;
+      this.flash('Draft restored', 'success');
+    },
+    discardDraft() {
+      this.showRestoreBanner = false;
+      this._pendingRestore = null;
+      localStorage.removeItem('bohdan-estimate-draft-v1');
+    },
+    async newEstimate() {
+      if (!confirm('Start a new estimate? This will clear all current data.')) return;
+      // Clear all photos from IndexedDB
+      try { await clearAllPhotos(); } catch(e) {}
+      this.customer = { name: '', address: '', phone: '', email: '' };
+      this.project = { title: '', description: '' };
+      this.items = [];
+      this.photos = [];
+      this.notes = '';
+      this.propertyType = 'residential';
+      this.contractType = 'lump_sum';
+      this.taxRate = 8.25;
+      this.estimateNumber = genEstimateNumber();
+      this.issuedAt = new Date().toISOString().slice(0, 10);
+      this.validUntilDays = 30;
+      localStorage.removeItem('bohdan-estimate-draft-v1');
+      this.flash('New estimate started', 'success');
+    },
+
+    // ---- Toast / flash ----
+    flash(msg, type = 'info') {
+      this.toastMsg = msg;
+      this.toastType = type;
+      clearTimeout(this.toastTimer);
+      this.toastTimer = setTimeout(() => { this.toastMsg = null; }, 2400);
+    },
+
+    // ---- PDF generation ----
+    async generatePDF() {
+      // Validation
+      if (!this.customer.name) {
+        this.flash('Add customer name first', 'error');
+        return;
+      }
+      if (this.items.length === 0) {
+        this.flash('Add at least one line item', 'error');
+        return;
+      }
+      this.pdfBuilding = true;
+      try {
+        await window.buildEstimatePDF(this);
+        this.flash('PDF downloaded', 'success');
+      } catch (e) {
+        console.error(e);
+        this.flash('PDF error: ' + e.message, 'error');
+      }
+      this.pdfBuilding = false;
+    },
+  };
+}
+
+// Expose globally for Alpine
+window.estimateApp = estimateApp;
+window.fmtMoney = fmtMoney;
+window.fmtDate = fmtDate;
+window.loadPhoto = loadPhoto;
+
+</script>
+<script>
+// pdf.js — Branded PDF generator for Bohdan's Handyman estimates
+// Uses jsPDF + jspdf-autotable, both loaded from CDN
+
+const BUSINESS = {
+  name: "Bohdan's Handyman Services",
+  phone: '(323) 547-5086',
+  site: 'handy-man.sites',
+  email: 'contact@handy-man.sites',
+  area: 'Denton & all North DFW',
+  tagline: 'Licensed & Insured · 1-Year Labor Guarantee',
+};
+
+// Colors (RGB tuples for jsPDF)
+const RUST = [200, 74, 26];
+const RUST_DEEP = [168, 60, 16];
+const INK = [14, 15, 17];
+const INK_SOFT = [42, 44, 48];
+const INK_MUTE = [90, 94, 102];
+const BONE = [245, 242, 236];
+const BONE_DEEP = [235, 230, 220];
+const PAPER = [251, 250, 246];
+const LINE = [216, 210, 197];
+
+async function loadPhotoAsDataURL(photoId) {
+  try {
+    const blob = await window.loadPhoto(photoId);
+    if (!blob) return null;
+    return await new Promise((res) => {
+      const r = new FileReader();
+      r.onload = () => res(r.result);
+      r.readAsDataURL(blob);
+    });
+  } catch (e) {
+    console.warn('Could not load photo', photoId, e);
+    return null;
+  }
+}
+
+async function loadLogoAsDataURL() {
+  // Try to fetch the logo from raw GitHub
+  const url = 'https://raw.githubusercontent.com/pulselinkk/Bohdan-s-Handyman-Services/refs/heads/main/assets/Create_a_professional_202604100902.png';
+  try {
+    const resp = await fetch(url);
+    if (!resp.ok) return null;
+    const blob = await resp.blob();
+    return await new Promise((res) => {
+      const r = new FileReader();
+      r.onload = () => res(r.result);
+      r.readAsDataURL(blob);
+    });
+  } catch (e) {
+    console.warn('Logo fetch failed', e);
+    return null;
+  }
+}
+
+function fmtMoneyPDF(n) {
+  if (typeof n !== 'number' || isNaN(n)) return '$0.00';
+  return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function fmtDatePDF(s) {
+  if (!s) return '';
+  const d = new Date(s);
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+window.buildEstimatePDF = async function(state) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'pt', format: 'letter', compress: true });
+
+  const W = doc.internal.pageSize.width;   // 612
+  const H = doc.internal.pageSize.height;  // 792
+  const M = 40; // margin
+
+  // Try to embed logo
+  const logoDataURL = await loadLogoAsDataURL();
+
+  // ============================================================
+  // Helpers
+  // ============================================================
+  const drawHeader = (pageNum, totalPages) => {
+    if (pageNum === 1) return; // page 1 has its own larger header
+    // Slim brand strip on continuation pages
+    doc.setFillColor(...RUST);
+    doc.rect(0, 0, W, 4, 'F');
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(...INK_MUTE);
+    doc.text(BUSINESS.name, M, 22);
+    doc.text(`Estimate #${state.estimateNumber}  ·  ${state.customer.name || 'Customer'}`, W - M, 22, { align: 'right' });
+    doc.setDrawColor(...LINE);
+    doc.setLineWidth(0.5);
+    doc.line(M, 30, W - M, 30);
+  };
+
+  const drawFooter = (pageNum, totalPages) => {
+    const y = H - 36;
+    doc.setDrawColor(...RUST);
+    doc.setLineWidth(0.8);
+    doc.line(M, y - 8, W - M, y - 8);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(...INK_MUTE);
+    doc.text(`${BUSINESS.name}  ·  ${BUSINESS.phone}  ·  ${BUSINESS.site}`, M, y);
+    doc.text(`Page ${pageNum} of ${totalPages}`, W - M, y, { align: 'right' });
+  };
+
+  // ============================================================
+  // PAGE 1 — HEADER BAND
+  // ============================================================
+  let y = M;
+
+  // Top rust accent bar
+  doc.setFillColor(...RUST);
+  doc.rect(0, 0, W, 6, 'F');
+
+  y = 60;
+
+  // Logo + business
+  if (logoDataURL) {
+    try {
+      doc.addImage(logoDataURL, 'PNG', M, y - 8, 56, 56, undefined, 'FAST');
+    } catch (e) { console.warn('addImage logo failed', e); }
+  } else {
+    // Fallback: rust square with "B"
+    doc.setFillColor(...RUST);
+    doc.roundedRect(M, y - 8, 56, 56, 6, 6, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(28);
+    doc.setTextColor(...BONE);
+    doc.text('B', M + 28, y + 28, { align: 'center' });
+  }
+
+  // Business name
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.setTextColor(...INK);
+  doc.text(BUSINESS.name, M + 70, y + 12);
+
+  // Tagline + contact
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(...INK_MUTE);
+  doc.text(BUSINESS.tagline, M + 70, y + 26);
+  doc.text(`${BUSINESS.phone}  ·  ${BUSINESS.site}`, M + 70, y + 38);
+  doc.text(BUSINESS.area, M + 70, y + 50);
+
+  // ESTIMATE wordmark — top right
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(34);
+  doc.setTextColor(...RUST);
+  doc.text('ESTIMATE', W - M, y + 16, { align: 'right' });
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(...INK_MUTE);
+  doc.text(`No. ${state.estimateNumber}`, W - M, y + 32, { align: 'right' });
+  doc.text(`Issued: ${fmtDatePDF(state.issuedAt)}`, W - M, y + 44, { align: 'right' });
+  doc.text(`Valid until: ${fmtDatePDF(state.validUntilDate)}`, W - M, y + 56, { align: 'right' });
+
+  // Header rule
+  y = 130;
+  doc.setDrawColor(...RUST);
+  doc.setLineWidth(2);
+  doc.line(M, y, W - M, y);
+
+  // ============================================================
+  // FROM / FOR cards
+  // ============================================================
+  y += 16;
+  const cardH = 84;
+  const cardW = (W - 2 * M - 16) / 2;
+
+  // FROM
+  doc.setFillColor(...BONE);
+  doc.roundedRect(M, y, cardW, cardH, 4, 4, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(...RUST);
+  doc.text('FROM', M + 12, y + 16);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(...INK);
+  doc.text(BUSINESS.name, M + 12, y + 32);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(...INK_SOFT);
+  doc.text(BUSINESS.phone, M + 12, y + 46);
+  doc.text(BUSINESS.email, M + 12, y + 58);
+  doc.text(BUSINESS.site, M + 12, y + 70);
+
+  // FOR
+  const forX = M + cardW + 16;
+  doc.setFillColor(...BONE);
+  doc.roundedRect(forX, y, cardW, cardH, 4, 4, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(...RUST);
+  doc.text('FOR', forX + 12, y + 16);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(...INK);
+  doc.text(state.customer.name || '—', forX + 12, y + 32);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(...INK_SOFT);
+  if (state.customer.address) {
+    const addrLines = doc.splitTextToSize(state.customer.address, cardW - 24);
+    doc.text(addrLines, forX + 12, y + 46);
+  }
+  if (state.customer.phone) {
+    doc.text(state.customer.phone, forX + 12, y + 58);
+  }
+  if (state.customer.email) {
+    doc.text(state.customer.email, forX + 12, y + 70);
+  }
+
+  y += cardH + 16;
+
+  // ============================================================
+  // PROJECT TITLE (if exists)
+  // ============================================================
+  if (state.project.title) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(...INK_MUTE);
+    doc.text('PROJECT', M, y);
+    y += 12;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(...INK);
+    doc.text(state.project.title, M, y);
+    y += 14;
+    if (state.project.description) {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor(...INK_SOFT);
+      const lines = doc.splitTextToSize(state.project.description, W - 2 * M);
+      doc.text(lines, M, y);
+      y += lines.length * 12;
+    }
+    y += 12;
+  }
+
+  // ============================================================
+  // LINE ITEMS TABLE
+  // ============================================================
+  const tableHead = [['#', 'DESCRIPTION', 'QTY', 'UNIT', 'UNIT PRICE', 'TOTAL']];
+  const tableBody = state.items.map((it, idx) => {
+    const desc = it.notes ? `${it.desc}\n${it.notes}` : it.desc;
+    return [
+      String(idx + 1),
+      desc,
+      String(it.qty),
+      it.unit,
+      fmtMoneyPDF(Number(it.price) || 0),
+      fmtMoneyPDF((Number(it.qty) || 0) * (Number(it.price) || 0))
+    ];
+  });
+
+  doc.autoTable({
+    head: tableHead,
+    body: tableBody,
+    startY: y,
+    margin: { left: M, right: M, top: 36, bottom: 60 },
+    styles: {
+      font: 'helvetica',
+      fontSize: 10,
+      cellPadding: 8,
+      textColor: INK,
+      lineColor: [232, 227, 216],
+      lineWidth: 0.3,
+      overflow: 'linebreak',
+    },
+    headStyles: {
+      fillColor: INK,
+      textColor: BONE,
+      fontStyle: 'bold',
+      fontSize: 9,
+      cellPadding: { top: 9, right: 8, bottom: 9, left: 8 },
+    },
+    alternateRowStyles: { fillColor: BONE },
+    columnStyles: {
+      0: { cellWidth: 28, halign: 'center', textColor: INK_MUTE, fontSize: 9 },
+      1: { cellWidth: 'auto' },
+      2: { cellWidth: 40, halign: 'right' },
+      3: { cellWidth: 50, halign: 'center', textColor: INK_MUTE, fontSize: 9 },
+      4: { cellWidth: 75, halign: 'right' },
+      5: { cellWidth: 80, halign: 'right', fontStyle: 'bold' },
+    },
+    didDrawPage: (data) => {
+      const totalPages = doc.internal.getNumberOfPages();
+      drawHeader(data.pageNumber, totalPages);
+      drawFooter(data.pageNumber, totalPages);
+    },
+    showHead: 'everyPage',
+  });
+
+  let yAfter = doc.lastAutoTable.finalY + 16;
+
+  // ============================================================
+  // TOTALS BLOCK (right-aligned)
+  // ============================================================
+  // Check if we need a new page for totals
+  if (yAfter > H - 200) { doc.addPage(); yAfter = 60; }
+
+  const totalsW = 240;
+  const totalsX = W - M - totalsW;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(...INK_SOFT);
+
+  // Subtotal
+  doc.text('Subtotal', totalsX, yAfter);
+  doc.text(fmtMoneyPDF(state.subtotal), W - M, yAfter, { align: 'right' });
+  yAfter += 14;
+
+  // Tax (only if > 0)
+  if (state.tax > 0) {
+    doc.setTextColor(...INK_MUTE);
+    doc.setFontSize(9);
+    doc.text(`Tax (${Number(state.taxRate).toFixed(2)}% on ${fmtMoneyPDF(state.taxableSubtotal)})`, totalsX, yAfter);
+    doc.setFontSize(10);
+    doc.setTextColor(...INK_SOFT);
+    doc.text(fmtMoneyPDF(state.tax), W - M, yAfter, { align: 'right' });
+    yAfter += 16;
+  }
+
+  // Divider
+  doc.setDrawColor(...INK);
+  doc.setLineWidth(1);
+  doc.line(totalsX, yAfter, W - M, yAfter);
+  yAfter += 6;
+
+  // TOTAL
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(...INK);
+  doc.text('TOTAL', totalsX, yAfter + 18);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(28);
+  doc.setTextColor(...RUST);
+  doc.text(fmtMoneyPDF(state.total), W - M, yAfter + 22, { align: 'right' });
+
+  yAfter += 40;
+
+  // Tax explanation note (if no tax was charged on residential)
+  if (state.tax === 0 && state.propertyType === 'residential') {
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(8);
+    doc.setTextColor(...INK_MUTE);
+    const taxNote = 'Per Texas Comptroller Pub. 94-116, charges for labor to repair, remodel, or restore residential real property are not subject to Texas sales tax.';
+    const taxLines = doc.splitTextToSize(taxNote, 280);
+    doc.text(taxLines, W - M, yAfter, { align: 'right' });
+    yAfter += taxLines.length * 10 + 10;
+  }
+
+  // ============================================================
+  // NOTES + DISCLAIMER
+  // ============================================================
+  yAfter += 16;
+  if (yAfter > H - 200) { doc.addPage(); yAfter = 60; }
+
+  // Notes section (if user wrote notes)
+  if (state.notes && state.notes.trim()) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(...RUST);
+    doc.text('NOTES', M, yAfter);
+    yAfter += 12;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(...INK_SOFT);
+    const noteLines = doc.splitTextToSize(state.notes, W - 2 * M);
+    doc.text(noteLines, M, yAfter);
+    yAfter += noteLines.length * 12 + 14;
+  }
+
+  // MANDATORY DISCLAIMER — black box, clearly visible
+  if (yAfter > H - 110) { doc.addPage(); yAfter = 60; }
+
+  doc.setFillColor(...INK);
+  doc.roundedRect(M, yAfter, W - 2 * M, 60, 4, 4, 'F');
+
+  // Rust accent stripe on left
+  doc.setFillColor(...RUST);
+  doc.rect(M, yAfter, 4, 60, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(...RUST);
+  doc.text('IMPORTANT', M + 16, yAfter + 18);
+
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(11);
+  doc.setTextColor(...BONE);
+  doc.text('All prices subject to final approval by the specialist.', M + 16, yAfter + 36);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(189, 184, 174);
+  doc.text(`Estimate valid for ${state.validUntilDays} days. Final price may vary with material costs or scope changes discovered during work.`, M + 16, yAfter + 50);
+
+  yAfter += 80;
+
+  // ============================================================
+  // SIGNATURE BLOCK
+  // ============================================================
+  if (yAfter > H - 110) { doc.addPage(); yAfter = 80; }
+
+  const sigW = (W - 2 * M - 24) / 2;
+
+  // Specialist signature
+  doc.setDrawColor(...INK);
+  doc.setLineWidth(0.8);
+  doc.line(M, yAfter + 30, M + sigW, yAfter + 30);
+  // Rust accent on left of line
+  doc.setDrawColor(...RUST);
+  doc.setLineWidth(2);
+  doc.line(M, yAfter + 30, M + 18, yAfter + 30);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(...INK_MUTE);
+  doc.text('Specialist Signature', M, yAfter + 42);
+  doc.text('Bohdan — ' + BUSINESS.name, M, yAfter + 54);
+
+  // Customer signature
+  const sigX2 = M + sigW + 24;
+  doc.setDrawColor(...INK);
+  doc.setLineWidth(0.8);
+  doc.line(sigX2, yAfter + 30, sigX2 + sigW, yAfter + 30);
+  doc.setDrawColor(...RUST);
+  doc.setLineWidth(2);
+  doc.line(sigX2, yAfter + 30, sigX2 + 18, yAfter + 30);
+
+  doc.setFontSize(8);
+  doc.setTextColor(...INK_MUTE);
+  doc.text('Customer Signature & Date', sigX2, yAfter + 42);
+  doc.text(state.customer.name || 'Customer', sigX2, yAfter + 54);
+
+  yAfter += 70;
+
+  // ============================================================
+  // PHOTO GALLERY (new pages)
+  // ============================================================
+  if (state.photos.length > 0) {
+    doc.addPage();
+    let py = 60;
+
+    // Page header
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.setTextColor(...INK);
+    doc.text('PROJECT PHOTOS', M, py);
+
+    doc.setDrawColor(...RUST);
+    doc.setLineWidth(2);
+    doc.line(M, py + 6, M + 80, py + 6);
+
+    py += 24;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(...INK_MUTE);
+    doc.text(`${state.photos.length} photo${state.photos.length > 1 ? 's' : ''} attached to this estimate`, M, py);
+    py += 24;
+
+    // Grid: 2 columns, photos with captions
+    const photoW = (W - 2 * M - 16) / 2;
+    const photoH = photoW * 0.72; // 4:3-ish ratio
+    const captionH = 24;
+    const cellH = photoH + captionH + 10;
+
+    let col = 0;
+    for (let i = 0; i < state.photos.length; i++) {
+      const photo = state.photos[i];
+      // New page if needed
+      if (py + cellH > H - 60) {
+        doc.addPage();
+        py = 60;
+        col = 0;
+        // Slim header drawn by autotable hook on later pages but this is non-table page — draw manually
+        const totalPages = doc.internal.getNumberOfPages();
+        drawHeader(doc.internal.getCurrentPageInfo().pageNumber, totalPages);
+        drawFooter(doc.internal.getCurrentPageInfo().pageNumber, totalPages);
+      }
+
+      const px = M + col * (photoW + 16);
+
+      // Load full photo
+      const dataUrl = await loadPhotoAsDataURL(photo.id);
+      if (dataUrl) {
+        try {
+          // Frame
+          doc.setDrawColor(...LINE);
+          doc.setLineWidth(0.5);
+          doc.rect(px, py, photoW, photoH);
+          doc.addImage(dataUrl, 'JPEG', px + 1, py + 1, photoW - 2, photoH - 2, undefined, 'FAST');
+        } catch (e) {
+          console.warn('Failed to embed photo', e);
+          // Placeholder
+          doc.setFillColor(...BONE_DEEP);
+          doc.rect(px, py, photoW, photoH, 'F');
+          doc.setFontSize(9);
+          doc.setTextColor(...INK_MUTE);
+          doc.text('[Photo]', px + photoW / 2, py + photoH / 2, { align: 'center' });
+        }
+      } else {
+        // Use thumbnail as fallback
+        if (photo.thumbDataUrl) {
+          try {
+            doc.addImage(photo.thumbDataUrl, 'JPEG', px, py, photoW, photoH, undefined, 'FAST');
+          } catch (e) {
+            doc.setFillColor(...BONE_DEEP);
+            doc.rect(px, py, photoW, photoH, 'F');
+          }
+        }
+      }
+
+      // Caption
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(9);
+      doc.setTextColor(...INK_SOFT);
+      const cap = photo.caption || photo.name.replace(/\.[^.]+$/, '');
+      const capLines = doc.splitTextToSize(cap, photoW);
+      doc.text(capLines.slice(0, 2), px, py + photoH + 12);
+
+      col++;
+      if (col === 2) {
+        col = 0;
+        py += cellH;
+      }
+    }
+  }
+
+  // ============================================================
+  // Final pass: ensure all pages have footers
+  // ============================================================
+  const totalPages = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= totalPages; i++) {
+    doc.setPage(i);
+    // Skip if it's been drawn (table pages have it via didDrawPage)
+    // Re-draw to ensure consistency on photo/totals/disclaimer pages
+    // Footer always at bottom
+    const yF = H - 36;
+    doc.setDrawColor(...RUST);
+    doc.setLineWidth(0.8);
+    doc.line(M, yF - 8, W - M, yF - 8);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(...INK_MUTE);
+    doc.text(`${BUSINESS.name}  ·  ${BUSINESS.phone}  ·  ${BUSINESS.site}`, M, yF);
+    doc.text(`Page ${i} of ${totalPages}`, W - M, yF, { align: 'right' });
+  }
+
+  // ============================================================
+  // Save
+  // ============================================================
+  const safeName = (state.customer.name || 'customer').replace(/[^a-z0-9]+/gi, '-').toLowerCase();
+  doc.save(`Estimate-${state.estimateNumber}-${safeName}.pdf`);
+};
+
+</script>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div x-data="estimateApp()" x-cloak>
+
+<div class="topbar">
+  <a href="index.html" class="brand-link">
+    <span class="brand-mark">B</span>
+    <span class="brand-name">Bohdan's · Estimate Builder</span>
+  </a>
+  <div class="save-status" :class="saveStatus === 'saving' ? 'saving' : ''">
+    <span class="dot"></span>
+    <span x-text="saveStatus === 'saving' ? 'Saving...' : 'Saved'"></span>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<header class="page-head">
+  <div class="page-head-inner">
+    <div class="page-head-text">
+      <div class="page-head-kicker">Internal Tool · Field Estimates</div>
+      <h1>Build a <em>professional</em> estimate.</h1>
+      <p class="page-head-sub">Add catalog items or custom work. Attach photos. Generate a branded PDF the customer can keep. Auto-saves to this device.</p>
+    </div>
+    <div class="page-head-actions">
+      <button class="btn btn-ghost btn-sm" @click="newEstimate()">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New
+      </button>
+      <button class="btn btn-primary" @click="generatePDF()" :disabled="pdfBuilding">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span x-text="pdfBuilding ? 'Building PDF...' : 'Download PDF'"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN APP -->
+<div class="app">
+  <!-- LEFT MAIN COLUMN -->
+  <div class="col-main">
+
+    <!-- Restore banner -->
+    <div class="banner" x-show="showRestoreBanner" x-transition>
+      <svg class="ic" style="color:var(--rust)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <div class="banner-text">
+        <strong>Unsaved estimate found.</strong>
+        <span style="color:var(--ink-mute)">Restore your previous work or start fresh?</span>
+      </div>
+      <div class="banner-actions">
+        <button class="btn btn-sm btn-primary" @click="restoreDraft()">Restore</button>
+        <button class="btn btn-sm btn-ghost" @click="discardDraft()">Discard</button>
+      </div>
+    </div>
+
+    <!-- 1. CUSTOMER INFO -->
+    <section class="card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <span class="card-num">1</span>
+          <h2>Customer info</h2>
+        </div>
+      </div>
+      <div class="field-row cols-2">
+        <div class="field">
+          <label class="field-label">Customer Name <span class="required">*</span></label>
+          <input class="input" type="text" x-model="customer.name" placeholder="John & Jane Smith" autocomplete="name"/>
+        </div>
+        <div class="field">
+          <label class="field-label">Phone</label>
+          <input class="input" type="tel" x-model="customer.phone" placeholder="(214) 555-0123" autocomplete="tel" inputmode="tel"/>
+        </div>
+      </div>
+      <div class="field-row cols-2">
+        <div class="field">
+          <label class="field-label">Service Address</label>
+          <input class="input" type="text" x-model="customer.address" placeholder="123 Main St, Frisco TX 75034" autocomplete="street-address"/>
+        </div>
+        <div class="field">
+          <label class="field-label">Email</label>
+          <input class="input" type="email" x-model="customer.email" placeholder="customer@example.com" autocomplete="email"/>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. PROJECT (optional) -->
+    <section class="card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <span class="card-num">2</span>
+          <h2>Project details <span style="font-size:11px;color:var(--ink-mute);font-weight:400;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.08em;margin-left:8px;">Optional</span></h2>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Project Title</label>
+        <input class="input" type="text" x-model="project.title" placeholder="e.g. Master Bath Remodel"/>
+      </div>
+      <div class="field">
+        <label class="field-label">Description</label>
+        <textarea class="textarea" x-model="project.description" placeholder="Brief overview of the project scope..."></textarea>
+      </div>
+    </section>
+
+    <!-- 3. LINE ITEMS -->
+    <section class="card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <span class="card-num">3</span>
+          <h2>Line items</h2>
+        </div>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-mute);" x-text="items.length + ' item' + (items.length === 1 ? '' : 's')"></span>
+      </div>
+
+      <!-- Tax controls -->
+      <div class="tax-controls">
+        <div class="field">
+          <label class="field-label">Property type</label>
+          <div class="toggle-group">
+            <button class="toggle-btn" :class="propertyType === 'residential' ? 'active' : ''" @click="propertyType = 'residential'">Residential</button>
+            <button class="toggle-btn" :class="propertyType === 'commercial' ? 'active' : ''" @click="propertyType = 'commercial'">Commercial</button>
+          </div>
+        </div>
+        <div class="field" x-show="propertyType === 'residential'">
+          <label class="field-label">Contract type</label>
+          <div class="toggle-group">
+            <button class="toggle-btn" :class="contractType === 'lump_sum' ? 'active' : ''" @click="contractType = 'lump_sum'">Lump-sum</button>
+            <button class="toggle-btn" :class="contractType === 'separated' ? 'active' : ''" @click="contractType = 'separated'">Separated</button>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Tax rate</label>
+          <div class="tax-rate-input">
+            <input class="input input-num" type="number" x-model.number="taxRate" min="0" max="20" step="0.01"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="items-toolbar">
+        <button class="btn btn-primary" @click="openCatalog()">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add from catalog
+        </button>
+        <button class="btn btn-ghost" @click="showCustomItem = true">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          Custom item
+        </button>
+      </div>
+
+      <!-- Empty state -->
+      <div class="items-empty" x-show="items.length === 0">
+        <strong>No items yet</strong>
+        Add services from the catalog or create custom line items.
+      </div>
+
+      <!-- Items table -->
+      <table class="items-table" x-show="items.length > 0">
+        <thead>
+          <tr>
+            <th class="col-handle"></th>
+            <th class="col-desc">Description</th>
+            <th class="col-qty right">Qty</th>
+            <th class="col-unit">Unit</th>
+            <th class="col-price right">Unit Price</th>
+            <th class="col-tax center">Tax</th>
+            <th class="col-total right">Total</th>
+            <th class="col-del"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <template x-for="(item, idx) in items" :key="item.id">
+            <tr>
+              <td class="col-handle">
+                <span class="handle">
+                  <button class="btn-icon-only btn btn-sm btn-ghost" style="border:none;padding:2px;" @click="moveItem(item.id, -1)" :disabled="idx === 0" title="Move up">↑</button>
+                </span>
+              </td>
+              <td class="col-desc" data-label="Item">
+                <input class="input-cell" type="text" x-model="item.desc" placeholder="Description"/>
+                <div style="font-size:11px;color:var(--ink-mute);margin-top:2px;padding-left:8px;">
+                  <span class="cat-pill" :class="item.source === 'custom' ? 'cat-custom' : ''" x-text="item.source === 'custom' ? 'Custom' : (item.kind === 'material' ? 'Material' : 'Labor')"></span>
+                  <button @click="item.showDetails = !item.showDetails" style="background:none;border:none;color:var(--rust);font-size:11px;cursor:pointer;margin-left:6px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;font-weight:600;" x-text="item.showDetails ? '− Note' : '+ Add note'"></button>
+                </div>
+                <div x-show="item.showDetails" style="margin-top:6px;">
+                  <input class="input-cell" type="text" x-model="item.notes" placeholder="Note (optional, prints under description)" style="font-style:italic;color:var(--ink-mute);"/>
+                </div>
+              </td>
+              <td class="col-qty" data-label="Qty">
+                <input class="input-cell right" type="number" x-model.number="item.qty" min="0" step="0.5" inputmode="decimal"/>
+              </td>
+              <td class="col-unit" data-label="Unit">
+                <input class="input-cell" type="text" x-model="item.unit" placeholder="ea"/>
+              </td>
+              <td class="col-price" data-label="Price">
+                <input class="input-cell right" type="number" x-model.number="item.price" min="0" step="0.01" inputmode="decimal"/>
+              </td>
+              <td class="col-tax" data-label="Tax">
+                <input type="checkbox" class="tax-cb" x-model="item.taxable"/>
+              </td>
+              <td class="col-total item-total" data-label="Total" x-text="window.fmtMoney(itemTotal(item))"></td>
+              <td class="col-del">
+                <button class="btn-icon-only btn btn-sm btn-danger" @click="removeItem(item.id)" title="Remove">
+                  <svg class="ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 4. PHOTOS -->
+    <section class="card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <span class="card-num">4</span>
+          <h2>Photos</h2>
+        </div>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-mute);" x-text="photos.length + ' photo' + (photos.length === 1 ? '' : 's')"></span>
+      </div>
+      <p class="card-help">Attach photos of the job site, before/after shots, or anything that helps document the estimate. They'll be embedded in the PDF and stored on this device only.</p>
+
+      <div class="photos-toolbar">
+        <label class="btn btn-primary">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          Take photo
+          <input type="file" accept="image/*" capture="environment" hidden @change="handlePhotoFiles($event.target.files); $event.target.value=''"/>
+        </label>
+        <label class="btn btn-ghost">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Choose from library
+          <input type="file" accept="image/*" multiple hidden @change="handlePhotoFiles($event.target.files); $event.target.value=''"/>
+        </label>
+      </div>
+
+      <!-- Upload progress -->
+      <div class="photo-progress" x-show="uploadProgress">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div style="flex:1;">
+          <div>Processing photos<span x-text="' (' + (uploadProgress?.done || 0) + ' of ' + (uploadProgress?.total || 0) + ')'"></span></div>
+          <div class="photo-progress-bar" style="margin-top:6px;">
+            <div class="photo-progress-fill" :style="'width:' + ((uploadProgress?.done / uploadProgress?.total * 100) || 0) + '%'"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div class="photos-grid" x-show="photos.length > 0">
+        <template x-for="photo in photos" :key="photo.id">
+          <div class="photo-tile" @click="openLightbox(photo)">
+            <img :src="photo.thumbDataUrl" :alt="photo.caption || photo.name"/>
+            <button class="photo-tile-del" @click.stop="removePhoto(photo.id)" title="Remove">×</button>
+            <div class="photo-tile-overlay" x-show="photo.caption">
+              <div class="photo-tile-caption" x-text="photo.caption"></div>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <div class="items-empty" x-show="photos.length === 0 && !uploadProgress" style="margin-top:0;">
+        <strong>No photos yet</strong>
+        Tap "Take photo" or "Choose from library" to add reference shots.
+      </div>
+    </section>
+
+    <!-- 5. NOTES + DISCLAIMER -->
+    <section class="card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <span class="card-num">5</span>
+          <h2>Notes & terms</h2>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Additional notes (optional)</label>
+        <textarea class="textarea" x-model="notes" placeholder="Any additional context, scope clarifications, or terms specific to this estimate..."></textarea>
+      </div>
+
+      <div class="disclaimer-box">
+        <span class="lbl">Required disclaimer (auto-included on PDF)</span>
+        <em>"All prices subject to final approval by the specialist."</em>
+      </div>
+
+      <details class="settings">
+        <summary>Estimate metadata</summary>
+        <div class="settings-body">
+          <div class="field-row cols-3">
+            <div class="field">
+              <label class="field-label">Estimate #</label>
+              <input class="input" type="text" x-model="estimateNumber"/>
+            </div>
+            <div class="field">
+              <label class="field-label">Issued</label>
+              <input class="input" type="date" x-model="issuedAt"/>
+            </div>
+            <div class="field">
+              <label class="field-label">Valid for (days)</label>
+              <input class="input input-num" type="number" x-model.number="validUntilDays" min="1" max="365"/>
+            </div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+  </div>
+
+  <!-- RIGHT SIDEBAR: TOTALS -->
+  <div class="col-side">
+    <div class="totals-card">
+      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--rust);font-weight:600;margin-bottom:8px;">Estimate Total</div>
+
+      <div class="totals-row">
+        <span class="label">Subtotal</span>
+        <span class="val" x-text="window.fmtMoney(subtotal)"></span>
+      </div>
+      <div class="totals-row" x-show="taxableSubtotal > 0">
+        <span class="label">Taxable</span>
+        <span class="val" style="color:var(--ink-mute);" x-text="window.fmtMoney(taxableSubtotal)"></span>
+      </div>
+      <div class="totals-row" x-show="tax > 0">
+        <span class="label">Tax (<span x-text="Number(taxRate).toFixed(2)"></span>%)</span>
+        <span class="val" x-text="window.fmtMoney(tax)"></span>
+      </div>
+
+      <div class="totals-final">
+        <span class="label">Total</span>
+        <span class="val" x-text="window.fmtMoney(total)"></span>
+      </div>
+
+      <div class="tax-note" x-show="tax === 0 && propertyType === 'residential' && items.length > 0">
+        <strong>No sales tax</strong> — Texas Pub. 94-116 exempts residential repair/remodeling labor.
+      </div>
+
+      <div class="totals-actions">
+        <button class="btn btn-primary btn-block btn-lg" @click="generatePDF()" :disabled="pdfBuilding || items.length === 0">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span x-text="pdfBuilding ? 'Building...' : 'Download PDF'"></span>
+        </button>
+      </div>
+
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line-soft);font-family:var(--font-mono);font-size:10px;letter-spacing:0.05em;color:var(--ink-mute);text-align:center;">
+        Auto-saves locally · Photos stored on device only
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE STICKY BAR -->
+<div class="mobile-bar">
+  <div class="mobile-bar-total">
+    <small>Total</small>
+    <span x-text="window.fmtMoney(total)"></span>
+  </div>
+  <button class="btn btn-primary" @click="generatePDF()" :disabled="pdfBuilding || items.length === 0">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    <span x-text="pdfBuilding ? '...' : 'PDF'"></span>
+  </button>
+</div>
+
+<!-- CATALOG MODAL -->
+<div class="modal-backdrop" x-show="catalogOpen" @click.self="closeCatalog()" x-transition>
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Add from catalog</h2>
+      <button class="modal-close" @click="closeCatalog()" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <input class="modal-search" type="search" x-model="catalogSearch" placeholder="Search services... e.g. tile, painting, dryer"/>
+
+      <!-- Category pills -->
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;">
+        <button class="toggle-btn" :class="activeCategory === 'all' ? 'active' : ''" @click="activeCategory = 'all'" style="background:var(--bone-deep);">All</button>
+        <template x-for="cat in window.CATEGORIES" :key="cat.id">
+          <button class="toggle-btn" :class="activeCategory === cat.id ? 'active' : ''" @click="activeCategory = cat.id" style="background:var(--bone-deep);">
+            <span x-text="cat.icon"></span> <span x-text="cat.label"></span>
+          </button>
+        </template>
+      </div>
+
+      <!-- Grouped by category -->
+      <template x-for="group in catalogByCategory" :key="group.id">
+        <div class="cat-section">
+          <div class="cat-section-title" x-text="group.label"></div>
+          <template x-for="item in group.items" :key="item.desc">
+            <div class="cat-item" @click="addFromCatalog(item)">
+              <div>
+                <div class="cat-item-name" x-text="item.desc"></div>
+                <div class="cat-item-meta">
+                  <span x-text="item.unit"></span>
+                  <span x-show="item.kind === 'material'" class="cat-item-tag">Material</span>
+                  <span x-show="item.alwaysTaxable" class="cat-item-tag">Taxable</span>
+                </div>
+              </div>
+              <div class="cat-item-price" x-text="'$' + Number(item.price).toLocaleString('en-US', {minimumFractionDigits:2})"></div>
+              <div>
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--rust);"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </div>
+            </div>
+          </template>
+        </div>
+      </template>
+
+      <div x-show="filteredCatalog.length === 0" style="text-align:center;padding:32px;color:var(--ink-mute);">
+        No matches. Try a different search or use a custom item.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CUSTOM ITEM MODAL -->
+<div class="modal-backdrop" x-show="showCustomItem" @click.self="showCustomItem = false" x-transition>
+  <div class="modal" style="max-width:500px;">
+    <div class="modal-head">
+      <h2>Custom line item</h2>
+      <button class="modal-close" @click="showCustomItem = false">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label class="field-label">Description <span class="required">*</span></label>
+        <input class="input" type="text" x-model="customItem.desc" placeholder="e.g. Custom built-in shelving"/>
+      </div>
+      <div class="field-row cols-3">
+        <div class="field">
+          <label class="field-label">Quantity</label>
+          <input class="input input-num" type="number" x-model.number="customItem.qty" min="0" step="0.5"/>
+        </div>
+        <div class="field">
+          <label class="field-label">Unit</label>
+          <input class="input" type="text" x-model="customItem.unit" placeholder="ea"/>
+        </div>
+        <div class="field">
+          <label class="field-label">Unit Price</label>
+          <input class="input input-num" type="number" x-model.number="customItem.price" min="0" step="0.01"/>
+        </div>
+      </div>
+      <div class="field-row cols-2">
+        <div class="field">
+          <label class="field-label">Type</label>
+          <div class="toggle-group">
+            <button class="toggle-btn" :class="customItem.kind === 'labor' ? 'active' : ''" @click="customItem.kind = 'labor'">Labor</button>
+            <button class="toggle-btn" :class="customItem.kind === 'material' ? 'active' : ''" @click="customItem.kind = 'material'">Material</button>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Apply tax?</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:9px 0;">
+            <input type="checkbox" class="tax-cb" x-model="customItem.taxable"/>
+            <span x-text="customItem.taxable ? 'Yes — taxable' : 'No tax'"></span>
+          </label>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px;">
+        <button class="btn btn-primary btn-block" @click="addCustomItem()" :disabled="!customItem.desc">Add to estimate</button>
+        <button class="btn btn-ghost" @click="showCustomItem = false">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="modal-backdrop" x-show="lightboxPhoto" @click.self="closeLightbox()" x-transition>
+  <template x-if="lightboxPhoto">
+    <div class="lightbox-content">
+      <div class="lightbox-img-wrap">
+        <img :src="lightboxPhoto.thumbDataUrl" :alt="lightboxPhoto.caption || ''"/>
+      </div>
+      <div class="lightbox-form">
+        <label class="field-label">Caption (appears on PDF)</label>
+        <input class="input" type="text" x-model="lightboxPhoto.caption" placeholder="e.g. Bathroom — water damage on ceiling" maxlength="120"/>
+        <div class="lightbox-actions">
+          <button class="btn btn-danger" @click="removePhoto(lightboxPhoto.id); closeLightbox()">Delete photo</button>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost" @click="closeLightbox()">Cancel</button>
+            <button class="btn btn-primary" @click="saveLightbox()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+</div>
+
+<!-- TOAST -->
+<div class="toast" :class="toastType" x-show="toastMsg" x-transition x-text="toastMsg"></div>
+
+</div><!-- /x-data -->
+
+</body>
+</html>
