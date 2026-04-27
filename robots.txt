@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /_*
 
-Sitemap: https://handy-man.sites/sitemap.xml
+Sitemap: https://handy-man.site/sitemap.xml
